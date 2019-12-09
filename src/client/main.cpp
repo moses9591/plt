@@ -34,12 +34,12 @@ int main(int argc, char *argv[])
         std::cout << "Load Failed" << std::endl;
         system("Pause");
     }
-    //arenaSprite.setScale(0.5,0.5);
+    
     arenaSprite.setTexture(arena);
 
     //display fighter1
     sf::Texture spriteSheet;
-    //sf:: IntRect rectSourceSprite(0,100,100,100);
+    
     if (!spriteSheet.loadFromFile("/home/ensea/plt/res/Fighters/Kuro.png")) //,rectSourceSprite));
     {
         std::cout << "Load Failed" << std::endl;
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         system("Pause");
     }
     sf::Sprite playerSprite2;
-    // playerSprite2.setOrigin(10.f, 20.f);
+    
     playerSprite2.setTexture(spriteSheet2);
     // // put fighter on the left of the arena
     playerSprite2.setPosition(sf::Vector2f(500.f, 250.f));
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
                 hpBarP2.setTexture(hpBarTexture);
                 hpBarP2.setPosition(530.f, 40.f);
                 bool attackPress = false;
-                //playerSprite2.move(sf::Vector2f(200.f,250.f));
+                
                 while (window.pollEvent(event))
                 {
                     switch (event.type)
@@ -153,21 +153,9 @@ int main(int argc, char *argv[])
                     playerSprite.move(385,0);
                     animation.Update(2, deltaTime);
                     playerSprite.setTextureRect(animation.uvRect);
-                    
-                    // playerSprite.setTextureRect(sf::IntRect(100 * frame, 100 * row, 100, 100));
-                    // playerSprite2.move(sf::Vector2f(50.f,250.f));
-                    // if (frameCounter == 100)
-                    // {
-                    //     frame = (frame + 1) % 3;
-                    //     frameCounter = 0;
-                    // }
-                    // frameCounter++;
-                }
-            
-                //cout << "frame = " << frame << endl;
-                //cout << "frame counter = " << frameCounter << endl;
 
-                //playerSprite.setTextureRect(sf::IntRect(32*frame, row, 32,48));
+                }
+
 
                 sf::Clock clock;
 
@@ -182,7 +170,6 @@ int main(int argc, char *argv[])
                 window.draw(playerSprite2);
 
                 window.display();
-                //}
             }
 
             // Fin test SFML
@@ -192,12 +179,7 @@ int main(int argc, char *argv[])
             cout << "---------------render ---------------------" << endl;
             State state;
             
-            state.initPlayers();
-            // auto playerList = state.getPlayerList();
-            // cout << playerList.size() <<endl;
-            // cout << &playerList[0] <<endl;
-            // cout << &playerList[1] <<endl;
-            
+            state.initPlayers();            
 
             //initiate Terrain
             state.setTerrain(FlintTerrain); // ThorkTerrain, FlintTerrain, KuroTerrain
@@ -276,7 +258,6 @@ int main(int argc, char *argv[])
                             attackPress = true;
                             break;
                         default:
-                            //state.notifyObservers({StateEventID::ALLCHANGED}, state);
                             break;
                         }
                         break;
@@ -337,8 +318,6 @@ int main(int argc, char *argv[])
             while (window.isOpen()) {
                 handleInputs(window,engine);
             }
-
-            
         }else if (strcmp(argv[1], "random_ai") == 0)
         {    
             cout << "--------------------random ai-------------------" << endl;
@@ -434,10 +413,7 @@ int main(int argc, char *argv[])
                     iaTurn =false;
                 }
             }
-        }
-
-
-        
+        }  
     }
 }
 
@@ -523,6 +499,28 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                                                         ->getFighter());
                         unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
                         engine->addCommand(0, move(ptr_defense));
+
+                        engine->update();
+                    }       
+                }
+                if(event.key.code == sf::Keyboard::Left or event.key.code == sf::Keyboard::Right)
+                {
+                    if(engine->getState().getCurrentPlayerID()== 0)
+                    {
+                        std::cout << "Movement is coming for player 0" << std::endl;
+                        MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
+                                                engine->getState().getPlayerList()[0]->getFighter()->getPosition());
+                        unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
+                        engine->addCommand(0, move(ptr_move));
+
+                        engine->update();
+                    }else if (engine->getState().getCurrentPlayerID()== 1)
+                    {
+                        std::cout << "Movement is coming for player 1" << std::endl;
+                        MoveCommand moveCommand(engine->getState().getPlayerList()[1]->getFighter(),
+                                                engine->getState().getPlayerList()[1]->getFighter()->getPosition());
+                        unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
+                        engine->addCommand(0, move(ptr_move));
 
                         engine->update();
                     }

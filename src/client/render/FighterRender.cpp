@@ -9,7 +9,7 @@ using namespace render;
 using namespace state;
 
 
-void FighterRender::draw(sf::RenderWindow &window, float drawPositionX, float drawPositionY, std::shared_ptr<state::Player> player, int id)
+void FighterRender::draw(sf::RenderWindow &window, float drawPositionX, float drawPositionY, std::shared_ptr<state::Player> player)
 {   
     //cout << "entry 1" << endl;
     TextureManager *instance = TextureManager::getInstance(); //recupère une instance de TextureManager
@@ -27,16 +27,3 @@ void FighterRender::draw(sf::RenderWindow &window, float drawPositionX, float dr
     
 }
 
-// void FighterRender::draw(sf::RenderWindow window, sf::Vector2f drawPosition, state::Fighter& fighter)
-// {
-//     //sf::Texture textureFighter = tileFighter->getTexture();
-//     sf::Sprite spriteFighter;
-//     spriteFighter.setPosition(drawPosition);
-
-//     // spriteFighter.setTexture(textureFighter);
-//     fighter.getName();
-
-//     window.clear();
-//    // window.draw(fighter.getName());//getTexture()
-//     window.display();
-// }

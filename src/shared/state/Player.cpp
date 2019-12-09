@@ -9,7 +9,6 @@ Player::Player()
    
 }
 
-
 Player::Player(int id)
 {
     this->id = id;
@@ -19,7 +18,7 @@ Player::Player(int id)
 Player::Player(int id, string name)
 {
     this->id = id;
-    this->playerName = name;
+    this->playerName = name;  
 }
 
 Player::Player(bool IA, std::string& playerName, std::shared_ptr<Fighter> fighter)
@@ -39,17 +38,17 @@ std::shared_ptr<Fighter> Player::getFighter()
     return fighter;
 }
 
- std::string Player::setPlayerName (std::string playerName)
- {
-    this->playerName = playerName;
- }
+void Player::setPlayerName (std::string playerName)
+{
+this->playerName = playerName;
+}
 
  std::string Player::getPlayerName ()
  {
     return playerName;
  }
 
- bool Player::setIA (bool IA)
+ void Player::setIA(bool IA)
  {
     this->IA = IA;
  }
@@ -58,8 +57,6 @@ std::shared_ptr<Fighter> Player::getFighter()
  {
     return IA;
  }
-
-
 
 void Player::setID(int id)
 {

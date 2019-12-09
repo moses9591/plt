@@ -23,9 +23,7 @@ void RechargeCommand::execute (state::State& state){
     if(fighter->getStatus()!=DEAD){
   
         //cout<<"Recharge is coming!!"<<endl;
-       
-        
-        int waitingTime=40000;
+    
 		string entityNameRecharging = "";
 		switch(fighter->getName()){
 			case Flint: 

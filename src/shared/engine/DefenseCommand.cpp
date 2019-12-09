@@ -56,7 +56,11 @@ void DefenseCommand::execute(state::State &state)
                 break;
             case RECHARGE:
                 defenderStatus = "RECHARGE";
+            case ATTACK:
+                defenderStatus = "ATTACK";
                 break;   
+            default:
+                break;
         }
 
         cout << defenderName << " status is "<< defenderStatus << endl; 

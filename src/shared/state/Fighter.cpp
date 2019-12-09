@@ -24,15 +24,15 @@ namespace state{
 		this->playerID = playerID;
 		this->status = status;
 		this->healthPointsMax = healthPointsMax;
-		this->healthPoints = move(healthPoints);
+		this->healthPoints = healthPoints;
 		this->combo=combo;
 		this->attack=attack;
-		this->mana = move(mana);
+		this->mana = mana;
 	}
 	
 	int Fighter::damageCompute(int damage)
 	{	
-		this->healthPoints = move(healthPoints - damage);
+		this->healthPoints = healthPoints - damage;
 		if(healthPoints <0) 
 		{
 			healthPoints=0;
@@ -175,7 +175,7 @@ void Fighter::fight(std::shared_ptr<Fighter> target, Attack attack)
 	{
 		status = RECHARGE;
 		mana += 20;
-		if(mana>manaMax) mana = manaMax;
+		if(mana > manaMax) mana = manaMax;
 	}
 
 	void Fighter::defend()
@@ -183,4 +183,12 @@ void Fighter::fight(std::shared_ptr<Fighter> target, Attack attack)
 		status = DEFENSE;
 	}
 	
+	void Fighter::setPosition( std::shared_ptr<Position> position)
+	{
+		this->position = position;
+	}
+    std::shared_ptr<Position> Fighter::getPosition()
+	{
+		return position;
+	}
 }
