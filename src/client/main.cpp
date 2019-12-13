@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     int row = 1;
     int frameCounter = 0;
 
-    if (!arena.loadFromFile("/home/ensea/plt/res/Terrains/seku_terrain.png"))
+    if (!arena.loadFromFile("./res/Terrains/seku_terrain.png"))
     {
         std::cout << "Load Failed" << std::endl;
         system("Pause");

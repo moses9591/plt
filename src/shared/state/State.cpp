@@ -3,6 +3,7 @@
 #include <memory>
 #include <iostream>
 #include "Fighter.h"
+#include "MoveArray.h"
 
 using namespace std;
 using namespace state;
@@ -14,6 +15,8 @@ State::State(){
     level = 1;
     round = 1;
     currentPlayerID = 1;
+    std::shared_ptr<MoveArray> mapArray;
+    moveArray = mapArray;
     endFight=false;
 }
 
@@ -92,17 +95,8 @@ int State::getCurrentPlayerID()
     return currentPlayerID;
 }
 
-int State::getHeight()
-{
-    return height;
-}
 
-int State::getWidth()
-{
-    return width;
-}
-
-std::vector<std::shared_ptr<Fighter>> State::getMoveArray ()
+std::shared_ptr<MoveArray> State::getMoveArray()
 {
     return moveArray;
 }

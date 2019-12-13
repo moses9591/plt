@@ -1,10 +1,11 @@
 #include "Fighter.h"
 #include <iostream>
+#include "State.h"
+#include "MoveArray.h"
 
 using namespace std;
 
 namespace state{
-
 
 	Fighter:: Fighter()
 	{
@@ -16,7 +17,6 @@ namespace state{
 		this-> playerID = playerID;
 		this-> name = name;
 	}
-
 
 	Fighter::Fighter(FighterName name, int playerID, FighterStatus status, int healthPointsMax, int healthPoints,int movePoints,int combo,Attack attack, int mana)
 	{
@@ -183,45 +183,43 @@ void Fighter::fight(std::shared_ptr<Fighter> target, Attack attack)
 		status = DEFENSE;
 	}
 	
-	void Fighter::setPosition( std::shared_ptr<Position> position)
+	void Fighter::setPosition(std::shared_ptr<Position> position)
 	{
 		this->position = position;
 	}
+
     std::shared_ptr<Position> Fighter::getPosition()
 	{
 		return position;
 	}
 
-	
+	void Fighter::move(std::shared_ptr<State> state, Direction direction){
 
-
-	void Fighter::move (State& state, Direction direction){
-			int mapWidth=state.getWidth();
-			int mapHeight=state.getHeight();
-
-		switch(direction){
-			
-		    case RIGHT:
-		        if(y<mapWidth-1){
-		            y++;
-		            this->direction=direction;
-		            break;
-		        }else{
-		            y=mapWidth-1;
-		            break;
-		        }
-		
-		    case LEFT:
-		        if(y>0){
-		            y--;
-		            this->direction=direction;
-		            break;
-		        }else{
-		            y=0;
-		            break;
-		        }
-		    default:
-		        break;
+		if(direction == RIGHT)
+		{
+			if(state->getCurrentPlayerID() == 0){
+				std::shared_ptr<Position> pos1 = state->getPlayerList()[0]->getFighter()->getPosition();
+				pos1->setX(pos1->getX() + 200);
+				state->getPlayerList()[0]->getFighter()->setPosition(pos1);
+			}
+			if(state->getCurrentPlayerID() == 1){
+				std::shared_ptr<Position> pos1 = state->getPlayerList()[1]->getFighter()->getPosition();
+				pos1->setX(pos1->getX() + 200);
+				state->getPlayerList()[0]->getFighter()->setPosition(pos1);
+			}
+		}
+		if(direction == LEFT)
+		{
+			if(state->getCurrentPlayerID() == 0){
+				std::shared_ptr<Position> pos1 = state->getPlayerList()[0]->getFighter()->getPosition();
+				pos1->setX(pos1->getX() - 200);
+				state->getPlayerList()[0]->getFighter()->setPosition(pos1);
+			}
+			if(state->getCurrentPlayerID() == 1){
+				std::shared_ptr<Position> pos1 = state->getPlayerList()[1]->getFighter()->getPosition();
+				pos1->setX(pos1->getX() - 200);
+				state->getPlayerList()[0]->getFighter()->setPosition(pos1);
+			}
 		}
 	}
 

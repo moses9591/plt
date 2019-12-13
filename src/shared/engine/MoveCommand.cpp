@@ -19,15 +19,14 @@ MoveCommand:: MoveCommand (std::shared_ptr<state::Fighter> fighter, std::shared_
 void MoveCommand::execute (state::State& state)
 {
     bool moveFeasible = true;
+    
         if(fighter->getStatus() != DEAD)
         {
-          if(moveFeasible){
+            if(moveFeasible){
                 fighter->setX(destination->getX());
                 fighter->setY(destination->getY()); 
-            } 
+            }
         }
-    
-
 }
 
 
