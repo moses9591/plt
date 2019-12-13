@@ -92,6 +92,21 @@ int State::getCurrentPlayerID()
     return currentPlayerID;
 }
 
+int State::getHeight()
+{
+    return height;
+}
+
+int State::getWidth()
+{
+    return width;
+}
+
+std::vector<std::shared_ptr<Fighter>> State::getMoveArray ()
+{
+    return moveArray;
+}
+
 State::~State(){
     
 }

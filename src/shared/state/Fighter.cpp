@@ -191,4 +191,38 @@ void Fighter::fight(std::shared_ptr<Fighter> target, Attack attack)
 	{
 		return position;
 	}
+
+	
+
+
+	void Fighter::move (State& state, Direction direction){
+			int mapWidth=state.getWidth();
+			int mapHeight=state.getHeight();
+
+		switch(direction){
+			
+		    case RIGHT:
+		        if(y<mapWidth-1){
+		            y++;
+		            this->direction=direction;
+		            break;
+		        }else{
+		            y=mapWidth-1;
+		            break;
+		        }
+		
+		    case LEFT:
+		        if(y>0){
+		            y--;
+		            this->direction=direction;
+		            break;
+		        }else{
+		            y=0;
+		            break;
+		        }
+		    default:
+		        break;
+		}
+	}
+
 }
