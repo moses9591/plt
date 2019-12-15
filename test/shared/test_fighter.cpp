@@ -1,7 +1,7 @@
 
 //#include <boost/test/unit_test.hpp>
 #include "../../src/shared/state/Fighter.h"
-//#include </home/ensea/plt/src/shared/state/Fighter.h>
+//#include <./src/shared/state/Fighter.h>
 #include "../../src/shared/state/State.h"
 #include <boost/test/unit_test.hpp>
 

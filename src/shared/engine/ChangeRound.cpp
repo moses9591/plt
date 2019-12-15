@@ -47,10 +47,4 @@ void ChangeRound::execute(State& state)
         cout<<"player 1 turn" <<endl;
         state.setCurrentPlayerID(1);
     }
-    
-    
-	// else if(currentFighter->getStatus()==WAITING){
-	// 	cout <<  fighterName << " has already finished his round.\n" <<endl;
-    //     usleep(waitingTime);
-	// }
 }

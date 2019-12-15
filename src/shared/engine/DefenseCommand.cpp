@@ -18,7 +18,7 @@ DefenseCommand::DefenseCommand(std::shared_ptr<Fighter> isDefending) : isDefendi
 //Functions
 void DefenseCommand::execute(state::State &state)
 {
-
+    int waitingTime = 4;
     if(isDefending->getStatus() != DEAD)
     {
         //cout << "Defense is coming!!" << endl;
@@ -68,5 +68,6 @@ void DefenseCommand::execute(state::State &state)
     else if(isDefending->getStatus()==DEAD){
         cout<<"Already dead!"<<endl;
     }
+    usleep(waitingTime);
     
 }

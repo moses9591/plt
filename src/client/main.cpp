@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     //display fighter1
     sf::Texture spriteSheet;
     
-    if (!spriteSheet.loadFromFile("/home/ensea/plt/res/Fighters/Kuro.png")) //,rectSourceSprite));
+    if (!spriteSheet.loadFromFile("./res/Fighters/Kuro.png")) //,rectSourceSprite));
     {
         std::cout << "Load Failed" << std::endl;
         system("Pause");
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     //display fighter2
     sf::Texture spriteSheet2;
     sf::IntRect rectSourceSprite1(0, 0, 100, 100);
-    if (!spriteSheet2.loadFromFile("/home/ensea/plt/res/Fighters/Flint.png", rectSourceSprite1))
+    if (!spriteSheet2.loadFromFile("./res/Fighters/Flint.png", rectSourceSprite1))
     {
         std::cout << "Load Failed" << std::endl;
         system("Pause");
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 
                 sf::Event event;
                 sf::Font font;
-                if (!font.loadFromFile("/home/ensea/plt/res/Fonts/FontFile.ttf"))
+                if (!font.loadFromFile("./res/Fonts/FontFile.ttf"))
                 {
                     return false;
                 }
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
                 text2.setPosition(530.f, 0.f);
 
                 sf::Texture hpBarTexture;
-                if (!hpBarTexture.loadFromFile("/home/ensea/plt/res/redBg.jpg", sf::IntRect(0, 0, 100, 10)))
+                if (!hpBarTexture.loadFromFile("./res/redBg.jpg", sf::IntRect(0, 0, 100, 10)))
                 {
                     return false;
                 }
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
                 // Close the window if the close button is pressed
                 sf::Event event;
                 sf::Font font;
-                if (!font.loadFromFile("/home/ensea/plt/res/Fonts/FontFile.ttf"))
+                if (!font.loadFromFile("./res/Fonts/FontFile.ttf"))
                 {
                     return false;
                 }
@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
                 text2.setPosition(530.f, 0.f);
 
                 sf::Texture hpBarTexture;
-                if (!hpBarTexture.loadFromFile("/home/ensea/plt/res/redBg.jpg", sf::IntRect(0, 0, 100, 10)))
+                if (!hpBarTexture.loadFromFile("./res/redBg.jpg", sf::IntRect(0, 0, 100, 10)))
                 {
                     return false;
                 }
@@ -526,9 +526,11 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                     }
                     
                 }
+            case sf::Event::MouseMoved:
+                break;
             default:
-            break;
-            
+                engine->getState().notifyObservers({StateEventID::ALLCHANGED}, engine->getState());
+                break;            
         }
     }
 }

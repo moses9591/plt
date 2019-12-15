@@ -6,6 +6,7 @@
 #include <iostream>
 #include "HealthBar.h"
 #include "engine.h"
+#include "EnergyBar.h"
 
 
 using namespace std;
@@ -25,19 +26,19 @@ void StateLayer::draw()
     window.clear();
 
     background.draw(window, state);
-    cout << "background ok" << endl;
-    fighterRender1.draw(window,state.getPlayerList()[0]->getFighter()->getPosition()->getX(),state.getPlayerList()[0]->getFighter()->getPosition()->getY(),state.getPlayerList()[0]);// id = 0, 2
-    cout << "fighterrenderok" << endl;          //  50,250
-    fighterRender2.draw(window,state.getPlayerList()[1]->getFighter()->getPosition()->getX(), state.getPlayerList()[1]->getFighter()->getPosition()->getY(),state.getPlayerList()[1]);// id = 1, 3
-    healthBar1.draw(window,state.getPlayerList()[0], 0.f, 40.f);
-    cout << "hp 1" << endl; 
-    healthBar2.draw(window,state.getPlayerList()[1], 440.f, 40.f);
-     cout << "hp 2" << endl; 
    
-                                // 500,250
-    cout << "fighterrenderok 2" << endl; 
+    fighterRender1.draw(window,state.getPlayerList()[0]->getFighter()->getPosition()->getX(),state.getPlayerList()[0]->getFighter()->getPosition()->getY(),state.getPlayerList()[0]);// id = 0, 2 //  50,250
+    fighterRender2.draw(window,state.getPlayerList()[1]->getFighter()->getPosition()->getX(), state.getPlayerList()[1]->getFighter()->getPosition()->getY(),state.getPlayerList()[1]);// id = 1, 3
+   
+    //draw the healthBar
+    healthBar1.draw(window,state.getPlayerList()[0], 0.f, 40.f);
+    healthBar2.draw(window,state.getPlayerList()[1], 440.f, 40.f);
+    
+    //draw the energyBar
+    energyBar1.draw(window, state.getPlayerList()[0], 0.f, 60.f);
+    energyBar2.draw(window, state.getPlayerList()[1], 440.f, 60.f);
+
     //about the Font ...
-    sf::Event event;
     sf::Font font;
     if(!font.loadFromFile("./res/Fonts/FontFile.ttf"))
     {
@@ -95,6 +96,7 @@ void StateLayer::draw()
    
     window.draw(text1);
     window.draw(text2);
+   
    
     window.display();
 }

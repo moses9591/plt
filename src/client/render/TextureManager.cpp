@@ -9,14 +9,12 @@ using namespace state;
 #include "state.h"
 #include "string.h"
 
-/*
-TextureManager *t = TextureManager::getInstance();
-auto *tile = TextureManager::getInstance()->getTileFighter(...);
-*/
+
 
 TextureManager* TextureManager::instance = nullptr;
 
-TextureManager::TextureManager(){
+TextureManager::TextureManager()
+{
 	tiles_fighter.insert({Kuro, make_shared<TileSet>("./res/Fighters/Kuro.png")});
 	tiles_fighter.insert({Flint, make_shared<TileSet>("./res/Fighters/Flint.png")});
 	tiles_fighter.insert({Thork, make_shared<TileSet>("./res/Fighters/Thork.png")});
@@ -39,6 +37,18 @@ TextureManager::TextureManager(){
 	tiles_healthbar.insert({10, make_shared<TileSet>("./res/healthBar/10.png")});
 	tiles_healthbar.insert({5, make_shared<TileSet>("./res/healthBar/5.png")});
 	tiles_healthbar.insert({0, make_shared<TileSet>("./res/healthBar/0.png")});
+
+	tiles_energyBar.insert({100, make_shared<TileSet>("./res/energyBar/100.png")});
+	tiles_energyBar.insert({90, make_shared<TileSet>("./res/energyBar/90.png")});
+	tiles_energyBar.insert({80, make_shared<TileSet>("./res/energyBar/80.png")});
+	tiles_energyBar.insert({70, make_shared<TileSet>("./res/energyBar/70.png")});
+	tiles_energyBar.insert({60, make_shared<TileSet>("./res/energyBar/60.png")});
+	tiles_energyBar.insert({50, make_shared<TileSet>("./res/energyBar/50.png")});
+	tiles_energyBar.insert({40, make_shared<TileSet>("./res/energyBar/40.png")});
+	tiles_energyBar.insert({30, make_shared<TileSet>("./res/energyBar/30.png")});
+	tiles_energyBar.insert({20, make_shared<TileSet>("./res/energyBar/20.png")});
+	tiles_energyBar.insert({10, make_shared<TileSet>("./res/energyBar/10.png")});
+	tiles_energyBar.insert({0, make_shared<TileSet>("./res/energyBar/0.png")});
 }
 
 TextureManager* TextureManager::getInstance(){
@@ -50,7 +60,6 @@ TextureManager* TextureManager::getInstance(){
 
 TileSet* TextureManager::getTileFighter (state::FighterName fighter)
 {	
-	
 	return tiles_fighter.at(fighter).get();
 }
 
@@ -64,9 +73,13 @@ TileSet* TextureManager::getTileHealthBar(int healthPoints)
 	return tiles_healthbar.at(healthPoints).get();
 }
 
+TileSet* TextureManager::getEnergyBar(int energy)
+{
+	return tiles_energyBar.at(energy).get();
+}
+
 
 bool TextureManager::load(){
-	// TODO: Check if Textures loaded? Prevent double call to "load"
 	
 	for (auto &it : tiles_fighter) {
 		if (!it.second->loadTexture()) {
@@ -81,6 +94,12 @@ bool TextureManager::load(){
 	}
 
 	for (auto &it : tiles_healthbar) {
+		if (!it.second->loadTexture()) {
+			return false;
+		}
+	}
+
+	for (auto &it : tiles_energyBar) {
 		if (!it.second->loadTexture()) {
 			return false;
 		}

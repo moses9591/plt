@@ -23,7 +23,6 @@ void RechargeCommand::execute (state::State& state){
     if(fighter->getStatus()!=DEAD){
   
         //cout<<"Recharge is coming!!"<<endl;
-    
 		string entityNameRecharging = "";
 		switch(fighter->getName()){
 			case Flint: 
@@ -41,13 +40,12 @@ void RechargeCommand::execute (state::State& state){
         }
         fighter->recharge();
         
-        cout << "This fighter " << entityNameRecharging << " is recharging " << endl;
+        cout << entityNameRecharging << " is recharging " << endl;
 
-        cout<<"This fighter had "<<oldMana <<" mana points"<<endl;
-        cout<<"this fighter has now "<<fighter->getMana()<<" mana points."<<endl;
+        cout<<entityNameRecharging << " had " << oldMana <<" mana points"<<endl;
+        cout<<entityNameRecharging << " has now "<<fighter->getMana()<<" mana points."<<endl;
 
-        fighter->setHealthPoints(fighter->getMana());
-        //fighter->setStatus(WAITING);
+        fighter->setHealthPoints(fighter->getHealthPoints());
 
     }
     else if(fighter->getStatus()==DEAD){

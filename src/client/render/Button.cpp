@@ -24,59 +24,7 @@ Button::Button(float x,float y,float width,float height,sf::Font* font,std::stri
 	
 	this->shape.setFillColor(this->idleColor);
 }
-/*
-void Button::render(sf::RenderTarget * target)
-{
-	target->draw(this->shape);	
-}
-*/
-// void Button::update(const sf::Vector2f mousePos)
-// {
-// 	//Idle
-// 	///this->buttonSize = BTN_IDLE;   WESH! ton buttonSize sort d ou !?
-// 	//Hover
-// 	if(this->shape.getGlobalBounds().contains(mousePos))
-// 	{
-// 		this->buttonState = BTN_HOVER;
-		
-// 		//Pressed
-// 		if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-// 		{
-// 			this->buttonState = BTN_ACTIVE;
-// 		}
-// 	}
-	
-// 	switch(this->buttonState)
-// 	{
-// 	case BTN_IDLE:
-// 		this->shape.setFillColor(this->idleColor);
-// 		break;
-		
-// 	case BTN_HOVER:
-// 		this->shape.setFillColor(this->hoverColor);
-// 		break;
-		
-// 	case BTN_ACTIVE:
-// 		this->shape.setFillColor(this->activeColor);
-// 		break;
-	
-// 	default:
-// 		break;
-// 	}
-// }
 
-// const bool Button::isPressed() const
-// {
-// 	if(this->buttonState == BTN_ACTIVE)
-// 		return true;
-	
-// 	return false;
-// }
-
-	
-	
-	
-	
 	
 	
 	
