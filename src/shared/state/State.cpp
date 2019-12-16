@@ -52,7 +52,7 @@ bool State::initPlayers(){
     //pointers are life!!!  <3 :) 03/12/2019
     //Player 1
     
-    shared_ptr<Player> ptrPlayer1(new Player(1));
+    shared_ptr<Player> ptrPlayer1(new Player(0));
     shared_ptr<Fighter> ptrFighter1(new Fighter(Thork, ptrPlayer1->getID(), AVAILABLE,100, 100, 50,0, COUPDEPOING,100));
     ptrPlayer1->setFighter(ptrFighter1);
 
@@ -62,7 +62,7 @@ bool State::initPlayers(){
     playerList.push_back(ptrPlayer1);
 
 
-    shared_ptr<Player> ptrPlayer2(new Player(2));
+    shared_ptr<Player> ptrPlayer2(new Player(1));
     shared_ptr<Fighter> ptrFighter2(new Fighter(Flint, ptrPlayer2->getID(), AVAILABLE,100, 100, 50,0, COUPDEPOING,100));
     ptrPlayer2->setFighter(ptrFighter2);
 
@@ -99,6 +99,17 @@ int State::getCurrentPlayerID()
 std::shared_ptr<MoveArray> State::getMoveArray()
 {
     return moveArray;
+}
+
+State State::copy()
+{
+    State result = State(*this);
+    for (auto& p : playerList)
+    {
+        result.playerList.push_back(p->copy());
+    }
+
+    return result;
 }
 
 State::~State(){

@@ -30,12 +30,11 @@ void RandomAI::run(std::shared_ptr<engine::Engine> engine)
          //cout << "random action is " <<randomAction << endl;
          
          int waitingTime = 3;
-         Player ennemy;
+         
          if(randomAction==0) //Attack
          {
             cout << "IA is attacking" <<endl;
-            
-            
+
             //AI is attacking
             AttackCommand attack(engine->getState().getPlayerList()[ArtificialId]->getFighter(),
                                  engine->getState().getPlayerList()[1]->getFighter());

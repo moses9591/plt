@@ -8,6 +8,7 @@ using namespace std;
 using namespace engine;
 using namespace state;
 
+
 Engine::Engine () : currentState(){
 	changeRound = true;
 }
@@ -31,6 +32,7 @@ void Engine::addCommand(int priority, std::unique_ptr<Command> ptr_cmd)
 
 void Engine::update()
 {
+	//cout << "in update" <<endl;
     StateEvent stateEvent(FIGHTERCHANGED);
     //cout << "stateEvent ok"<< endl;
 
@@ -42,13 +44,14 @@ void Engine::update()
 		currentCommands[i]->execute(currentState);
 		//cout << "execution done" << endl;
 		currentState.notifyObservers(stateEvent, currentState); // Notify the state which will notify render
-		cout << "\n" <<endl;
+		//cout << "notify ok!" <<endl;
 		sleep(2);
 		
 	}
 
     // Erase all the commands which were executed
 	currentCommands.clear();
+	//cout << "command are empty" <<endl;
 
 }
 
@@ -127,7 +130,41 @@ void Engine::checkRoundStart(){
 	}
 }
 
-void Engine::runCommands()
-{
-
+bool Engine::getChangeRound (){
+	return changeRound;
 }
+
+bool Engine::getStop (){
+	return stop;
+}
+
+void Engine::setCurrentState (state::State currentState){
+	cout << "currentState" << endl;
+	this->currentState = currentState;
+	cout << "currentState ok" << endl;
+}
+
+void Engine::setCurrentCommands (std::map<int,std::unique_ptr<Command>> currentCommands){
+	this->currentCommands=move(currentCommands);
+}
+
+void Engine::setChangeRound (bool changeRound){
+	this->changeRound=changeRound;
+}
+
+void Engine::setStop (bool stop){
+	this->stop=stop;
+}
+
+std::map<int, std::unique_ptr<Command>>&  Engine::getCurrentCommands ()
+{
+	return currentCommands;
+}
+
+// std::shared_ptr<Engine> Engine::copy()
+// {
+// 	std::shared_ptr<Engine> result = std::make_shared<Engine>();
+// 	result->currentState = currentState.copy();
+// 	result->stop = stop;
+// 	return result;
+// }
