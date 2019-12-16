@@ -26,10 +26,11 @@ void StateLayer::draw()
     window.clear();
 
     background.draw(window, state);
-   
+    //cout << "background ok" <<endl;
+    //cout << this->state.getPlayerList()[0]->getFighter()->getPosition()->getX() << endl;
     fighterRender1.draw(window,state.getPlayerList()[0]->getFighter()->getPosition()->getX(),state.getPlayerList()[0]->getFighter()->getPosition()->getY(),state.getPlayerList()[0]);// id = 0, 2 //  50,250
     fighterRender2.draw(window,state.getPlayerList()[1]->getFighter()->getPosition()->getX(), state.getPlayerList()[1]->getFighter()->getPosition()->getY(),state.getPlayerList()[1]);// id = 1, 3
-   
+    //cout << "fighterRender1 ok" <<endl;
     //draw the healthBar
     healthBar1.draw(window,state.getPlayerList()[0], 0.f, 40.f);
     healthBar2.draw(window,state.getPlayerList()[1], 440.f, 40.f);
@@ -105,5 +106,7 @@ void StateLayer::draw()
 void StateLayer::stateChanged(const state::StateEvent& stateEvent, const state::State &new_state)
 {
     this->state = new_state;
+    //cout <<"statechanged" << endl;
     this->draw(); 
+    //cout << "draw ok!" <<endl;
 }

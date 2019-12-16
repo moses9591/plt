@@ -19,7 +19,7 @@ AttackCommand::AttackCommand (std::shared_ptr<Fighter> attacker, std::shared_ptr
 //Functions
 
 void AttackCommand::execute (state::State& state){
-    cout << "execution is coming" << endl;
+    //cout << "execution is coming" << endl;
     int waitingTime = 5;
     
     if(attacker->getStatus()!=DEAD){

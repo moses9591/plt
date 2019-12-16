@@ -20,15 +20,19 @@ void HeuristicAI::run(std::shared_ptr<Engine> engine)
 {
 
     int choice;
+    //IA is still alive
     while (engine->getState().getPlayerList()[ArtificialId]->getFighter()->getStatus()!=DEAD)
     {
         engine->getState().getPlayerList()[ArtificialId]->getFighter()->setStatus(WAITING);
-
-        // Choose heuristic action depending
-        if (engine->getState().getPlayerList()[ArtificialId]->getFighter()->getHealthPoints() < engine->getState().getPlayerList()[ArtificialId]->getFighter()->getHealthPointsMax() / 4)
+        //IA in danger 
+        if (engine->getState().getPlayerList()[ArtificialId]->getFighter()->getHealthPoints()
+             < engine->getState().getPlayerList()[ArtificialId]->getFighter()->getHealthPointsMax() / 4)
         {
-        // Health is low, defend.
-            choice = 1;
+            //but if opponent can't attack 
+            if(engine->getState().getPlayerList()[!ArtificialId]->getFighter()->getMana()
+                <engine->getState().getPlayerList()[!ArtificialId]->getFighter()->getHealthPointsMax() / 4)
+                choice = 0; //then IA will attack
+            else  choice = 1; //if not IA is going to defend
         }
         else if (engine->getState().getPlayerList()[ArtificialId]->getFighter()->getMana() < 40)
         {
@@ -37,13 +41,12 @@ void HeuristicAI::run(std::shared_ptr<Engine> engine)
         }
         else
         {
-        // Attack is the default action.
             choice = 0;
         }
         
         int waitingTime = 4;
         
-        if(choice==0) //Attack
+        if(choice==0) 
         {
             cout << "IA is attacking" <<endl;
             AttackCommand attack(engine->getState().getPlayerList()[ArtificialId]->getFighter(), engine->getState().getPlayerList()[1]->getFighter());
@@ -59,7 +62,7 @@ void HeuristicAI::run(std::shared_ptr<Engine> engine)
             break;
             
         }
-        else if(choice == 1) //Defense
+        else if(choice == 1) 
         {
             cout << "IA is defending" <<endl;
             DefenseCommand defense(engine->getState().getPlayerList()[ArtificialId]->getFighter());
@@ -75,7 +78,7 @@ void HeuristicAI::run(std::shared_ptr<Engine> engine)
             break;
             
         }
-        else{ //Recharging
+        else{ 
             cout << "IA is recharging" <<endl;
             RechargeCommand recharge(engine->getState().getPlayerList()[ArtificialId]->getFighter());
             unique_ptr<Command> ptr_recharge (new RechargeCommand(recharge));

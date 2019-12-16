@@ -44,7 +44,7 @@ int Fighter::damageCompute(int damage)
 
 void Fighter::fight(std::shared_ptr<Fighter> target, Attack attack)
 {
-	int tabDamage[3] = {20,30,40};
+	int tabDamage[3] = {10,30,50};
 	int damage =rand()%3;
 	if(mana >=30)
 	{
@@ -227,5 +227,22 @@ void Fighter::move(std::shared_ptr<State> state, Direction direction){
 			state->getPlayerList()[0]->getFighter()->setPosition(pos1);
 		}
 	}
+}
+
+std::shared_ptr<state::Fighter> state::Fighter::copy()
+{
+	std::shared_ptr<Fighter> result = std::make_shared<Fighter>();
+	result->status = status;
+	result->x = x;
+	result->y = y;
+	result->name = name;
+	result->status = status;
+	result->healthPointsMax = healthPointsMax;
+	result->healthPoints = healthPoints;
+	result->manaMax = manaMax;
+	result->mana = mana;
+	result->combo = combo;
+	result->attack = attack;
+	return result;
 }
 

@@ -68,3 +68,12 @@ int Player::getID()
     return id;
 }
 
+std::shared_ptr<Player> Player::copy()
+{
+    std::shared_ptr<Player> result = make_shared<Player>();
+    result->IA = IA;
+    result->id = id;
+    result->playerName = playerName;
+    result->fighter = fighter->copy();
+    return result;
+}
