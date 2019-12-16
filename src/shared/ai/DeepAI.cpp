@@ -124,7 +124,7 @@ void DeepAI::run(std::shared_ptr<engine::Engine> engine)
                     ptrHeadNode->getChildDeepAiNodeList()[i]->getChildDeepAiNodeList()[j]->setScore(evalSituation(copiedEngine));
 
                 }
-                minimixeScore(ptrHeadNode->getChildDeepAiNodeList()[i]);
+                minimiseScore(ptrHeadNode->getChildDeepAiNodeList()[i]);
             }
             maximiseScore(ptrHeadNode);
 
@@ -181,7 +181,7 @@ void DeepAI::maximiseScore (std::shared_ptr<DeepAiNode>& ptrEvaluatedNode){
 }
 
 
-void DeepAI::minimixeScore (std::shared_ptr<DeepAiNode>& ptrEvaluatedNode){
+void DeepAI::minimiseScore (std::shared_ptr<DeepAiNode>& ptrEvaluatedNode){
     int actualScore;
     std::vector<std::shared_ptr<DeepAiNode>> childNodes=ptrEvaluatedNode->getChildDeepAiNodeList();
     int minScore=childNodes[0]->getScore();
