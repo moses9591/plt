@@ -22,7 +22,7 @@ DeepAI::DeepAI(int AiID):depth(depth)
 }
 
 //function with the commands
-void DeepAI::storeAttackCommands (std::shared_ptr<engine::Engine> copiedEngine, std::vector<std::shared_ptr<Command>> commandList)
+void DeepAI::storeAttackCommands (std::vector<std::shared_ptr<Command>> commandList, std::shared_ptr<engine::Engine> copiedEngine)
 {
         //Initialize the Attack constrctor with attacker and target
         AttackCommand attackCommand(copiedEngine->getState().getPlayerList()[0]->getFighter(), 
@@ -37,7 +37,7 @@ void DeepAI::storeAttackCommands (std::shared_ptr<engine::Engine> copiedEngine, 
         cout << "att is coming" <<endl;
 }
 
-void DeepAI::storeDefenseCommands(std::shared_ptr<engine::Engine> copiedEngine, std::vector<std::shared_ptr<Command>> commandList)                                
+void DeepAI::storeDefenseCommands(std::vector<std::shared_ptr<Command>> commandList, std::shared_ptr<engine::Engine> copiedEngine)                                
 {
     cout << "def is coming" <<endl;
     DefenseCommand defense(copiedEngine->getState().getPlayerList()[0]->getFighter());
@@ -54,7 +54,7 @@ void DeepAI::storeDefenseCommands(std::shared_ptr<engine::Engine> copiedEngine, 
 
 }
 
-void DeepAI::storeRechargeCommands(std::shared_ptr<engine::Engine> copiedEngine,std::vector<std::shared_ptr<Command>> commandList)                                
+void DeepAI::storeRechargeCommands(std::vector<std::shared_ptr<Command>> commandList, std::shared_ptr<engine::Engine> copiedEngine)                                
 {
     RechargeCommand recharge(copiedEngine->getState().getPlayerList()[0]->getFighter());
     unique_ptr<Command> ptr_recharge (new RechargeCommand(recharge));
@@ -77,15 +77,15 @@ std::vector<shared_ptr<Command>> DeepAI::getCommand()
     {
     case 0:
         cout << "getting att" <<endl;
-        storeAttackCommands(engine,commandList);
+        storeAttackCommands(commandList, engine);
         break;
     case 1:
         cout << "getting def" <<endl;
-        storeDefenseCommands(engine,commandList);
+        storeDefenseCommands(commandList, engine);
         break;
     case 2:
         cout << "getting rech" <<endl;
-        storeRechargeCommands(engine,commandList);
+        storeRechargeCommands(commandList, engine);
         break;
     default:
         break;
@@ -99,7 +99,7 @@ void DeepAI::run(std::shared_ptr<engine::Engine> engine)
    
     if(engine->getState().getCurrentPlayerID()==ArtificialId){
         //cout << "in" <<endl;
-        int action;
+        
         while (engine->getState().getPlayerList()[ArtificialId]->getFighter()->getStatus()!=DEAD)
         {
             std::shared_ptr<Engine> copiedEngine;
@@ -168,7 +168,7 @@ void DeepAI::copyEngine (std::shared_ptr<engine::Engine> engine,std::shared_ptr<
 int DeepAI::evalSituation(std::shared_ptr<engine::Engine> copiedEngine)
 {
     int score=0; 
-    for(uint i=0; i<copiedEngine->getState().getPlayerList().size(); i++)
+    for(int i=0; i<copiedEngine->getState().getPlayerList().size(); i++)
     {
         //if IA is playing
         if(i == ArtificialId)

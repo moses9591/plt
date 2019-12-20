@@ -101,16 +101,16 @@ std::shared_ptr<MoveArray> State::getMoveArray()
     return moveArray;
 }
 
-State State::copy()
-{
-    State result = State(*this);
-    for (auto& p : playerList)
-    {
-        result.playerList.push_back(p->copy());
-    }
+// State State::copy()
+// {
+//     State result = State(*this);
+//     for (auto& p : playerList)
+//     {
+//         result.playerList.push_back(p->copy());
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
 State::~State(){
     

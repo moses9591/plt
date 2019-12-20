@@ -229,20 +229,20 @@ void Fighter::move(std::shared_ptr<State> state, Direction direction){
 	}
 }
 
-std::shared_ptr<state::Fighter> state::Fighter::copy()
-{
-	std::shared_ptr<Fighter> result = std::make_shared<Fighter>();
-	result->status = status;
-	result->x = x;
-	result->y = y;
-	result->name = name;
-	result->status = status;
-	result->healthPointsMax = healthPointsMax;
-	result->healthPoints = healthPoints;
-	result->manaMax = manaMax;
-	result->mana = mana;
-	result->combo = combo;
-	result->attack = attack;
-	return result;
-}
+// std::shared_ptr<state::Fighter> state::Fighter::copy()
+// {
+// 	std::shared_ptr<Fighter> result = std::make_shared<Fighter>();
+// 	result->status = status;
+// 	result->x = x;
+// 	result->y = y;
+// 	result->name = name;
+// 	result->status = status;
+// 	result->healthPointsMax = healthPointsMax;
+// 	result->healthPoints = healthPoints;
+// 	result->manaMax = manaMax;
+// 	result->mana = mana;
+// 	result->combo = combo;
+// 	result->attack = attack;
+// 	return result;
+// }
 

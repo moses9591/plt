@@ -166,10 +166,10 @@ std::map<int, std::unique_ptr<Command>>&  Engine::getCurrentCommands ()
 	return currentCommands;
 }
 
-std::shared_ptr<Engine> Engine::copy()
-{
-	std::shared_ptr<Engine> engine = std::make_shared<Engine>();
-	currentState= engine->getState().copy();
-	//result->getStop() = stop;
-	return engine;
-}
+// std::shared_ptr<Engine> Engine::copy()
+// {
+// 	std::shared_ptr<Engine> engine = std::make_shared<Engine>();
+// 	currentState= engine->getState().copy();
+// 	//result->getStop() = stop;
+// 	return engine;
+// }
