@@ -460,6 +460,54 @@ int main(int argc, char *argv[])
                     iaTurn =false;
                 }
             }
+        } else if(strcmp(argv[1], "demo") == 0)
+        {
+            cout << "--------------------demo-------------------" << endl;
+            sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone");
+
+
+            std::shared_ptr<Engine> engine = make_shared<Engine>();
+
+            engine->getState().setTerrain(KuroTerrain);
+            engine->getState().initPlayers(); //getting the state by using engine
+            engine->getState().setRound(1);
+
+            
+            //Client Side (Render)
+            StateLayer stateLayer(window, engine->getState());
+            engine->getState().registerObserver(&stateLayer);
+            
+            TextureManager *textureManager = textureManager->getInstance();
+            if (textureManager->load())
+            {
+                cout << "texuture manager ok!\n" << endl;
+            }
+            else
+            {
+                cout << "texuture manager loading failed!" << endl;
+                return EXIT_FAILURE;
+            }
+            stateLayer.draw();
+
+            cout << " User plays first" << endl;
+            cout << "Use the following rules to play." << endl;
+            cout << "A : Attack, R: Recharge mana, D: Defend" << endl;
+            cout << "Press T : Turn Over, IA plays" << endl;
+           
+           
+            while (window.isOpen()) {
+                if(!iaTurn){
+                    // Manage user inputs
+                    HeuristicAI heuristicAI(0);
+                    heuristicAI.run(engine);
+                    iaTurn = true;
+                } else {
+                    cout << "run ai" << endl;
+                    RandomAI randomAI(0); //AiID == 0
+                    randomAI.run(engine);
+                    iaTurn =false;
+                }
+            }
         }
     }
 }

@@ -53,7 +53,7 @@ void HeuristicAI::run(std::shared_ptr<Engine> engine)
             unique_ptr<Command> ptr_attack (new AttackCommand(attack));
             engine->addCommand(0, move(ptr_attack));
 
-            ChangeRound changeRound(engine->getState().getPlayerList()[0]->getFighter());
+            ChangeRound changeRound(engine->getState().getPlayerList()[!ArtificialId]->getFighter());
             unique_ptr<Command> ptr_change (new ChangeRound(changeRound));
             engine->addCommand(1, move(ptr_change));
 
@@ -69,7 +69,7 @@ void HeuristicAI::run(std::shared_ptr<Engine> engine)
             unique_ptr<Command> ptr_defense (new DefenseCommand(defense));
             engine->addCommand(0, move(ptr_defense));
 
-            ChangeRound changeRound(engine->getState().getPlayerList()[0]->getFighter());
+            ChangeRound changeRound(engine->getState().getPlayerList()[!ArtificialId]->getFighter());
             unique_ptr<Command> ptr_change (new ChangeRound(changeRound));
             engine->addCommand(1, move(ptr_change));
 
@@ -84,7 +84,7 @@ void HeuristicAI::run(std::shared_ptr<Engine> engine)
             unique_ptr<Command> ptr_recharge (new RechargeCommand(recharge));
             engine->addCommand(0, move(ptr_recharge));
 
-            ChangeRound changeRound(engine->getState().getPlayerList()[0]->getFighter());
+            ChangeRound changeRound(engine->getState().getPlayerList()[!ArtificialId]->getFighter());
             unique_ptr<Command> ptr_change (new ChangeRound(changeRound));
             engine->addCommand(1, move(ptr_change));
 

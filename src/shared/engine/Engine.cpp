@@ -138,9 +138,14 @@ bool Engine::getStop (){
 	return stop;
 }
 
-void Engine::setCurrentState (state::State currentState){
+void Engine::setCurrentState (state::State state){
 	cout << "currentState" << endl;
-	this->currentState = currentState;
+	state.setCurrentPlayerID(this->currentState.getCurrentPlayerID());
+	// state.
+	// this->currentState.getPlayerList() = state.getPlayerList();
+	// this->currentState.getPlayerList()[0]->getFighter() = state.getPlayerList()[0]->getFighter();
+	// this->currentState.getPlayerList()[1]->getFighter() = state.getPlayerList()[1]->getFighter();
+	
 	cout << "currentState ok" << endl;
 }
 
@@ -161,10 +166,10 @@ std::map<int, std::unique_ptr<Command>>&  Engine::getCurrentCommands ()
 	return currentCommands;
 }
 
-// std::shared_ptr<Engine> Engine::copy()
-// {
-// 	std::shared_ptr<Engine> result = std::make_shared<Engine>();
-// 	result->currentState = currentState.copy();
-// 	result->stop = stop;
-// 	return result;
-// }
+std::shared_ptr<Engine> Engine::copy()
+{
+	std::shared_ptr<Engine> engine = std::make_shared<Engine>();
+	currentState= engine->getState().copy();
+	//result->getStop() = stop;
+	return engine;
+}
