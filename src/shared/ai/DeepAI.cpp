@@ -21,76 +21,58 @@ DeepAI::DeepAI(int AiID):depth(depth)
     ArtificialId=AiID;
 }
 
-//function with the commands
-void DeepAI::storeAttackCommands (std::vector<std::shared_ptr<Command>> commandList, std::shared_ptr<engine::Engine> copiedEngine)
+
+void DeepAI::storeAttackCommands (std::shared_ptr<Engine> engine, int fighter, int target)
 {
         //Initialize the Attack constrctor with attacker and target
-        AttackCommand attackCommand(copiedEngine->getState().getPlayerList()[0]->getFighter(), 
-                                            copiedEngine->getState().getPlayerList()[1]->getFighter());
-        unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
-        copiedEngine->addCommand(0, move(ptr_attack));   
-        cout << "att is coming" <<endl;
-
-        //convert unique_ptr into _shared_ptr
-        std::shared_ptr<Command> ptr_attack_shared = std::move(ptr_attack);
-        commandList.push_back(ptr_attack_shared);
-        cout << "att is coming" <<endl;
+        AttackCommand attackCommand(engine->getState().getPlayerList()[fighter]->getFighter(), 
+        engine->getState().getPlayerList()[target]->getFighter());
+        std::unique_ptr<engine::Command> ptr_attack (new engine::AttackCommand(attackCommand));
+        engine->addCommand(0, move(ptr_attack));
+        engine->update();
 }
 
-void DeepAI::storeDefenseCommands(std::vector<std::shared_ptr<Command>> commandList, std::shared_ptr<engine::Engine> copiedEngine)                                
+void DeepAI::storeDefenseCommands (std::shared_ptr<engine::Engine> engine, int fighter)                                
 {
-    cout << "def is coming" <<endl;
-    DefenseCommand defense(copiedEngine->getState().getPlayerList()[0]->getFighter());
-    cout << "def is coming" <<endl;
-    unique_ptr<Command> ptr_defense (new DefenseCommand(defense));
-    cout << "def is coming" <<endl;
-    copiedEngine->addCommand(0, move(ptr_defense));
-    cout << "def is coming" <<endl;
-
-    //convert unique_ptr into _shared_ptr
-    std::shared_ptr<Command> ptr_defense_shared = std::move(ptr_defense);
-    commandList.push_back(ptr_defense_shared);
-    cout << "def is coming 1" <<endl;
-
+   
+    engine::DefenseCommand defenseCommand(engine->getState().getPlayerList()[fighter]->getFighter());
+    std::unique_ptr<engine::Command> ptr_defense (new engine::DefenseCommand(defenseCommand));
+    engine->addCommand(0, move(ptr_defense));
+    engine->update();
 }
 
-void DeepAI::storeRechargeCommands(std::vector<std::shared_ptr<Command>> commandList, std::shared_ptr<engine::Engine> copiedEngine)                                
+void DeepAI::storeRechargeCommands (std::shared_ptr<engine::Engine> engine, int fighter)                               
 {
-    RechargeCommand recharge(copiedEngine->getState().getPlayerList()[0]->getFighter());
-    unique_ptr<Command> ptr_recharge (new RechargeCommand(recharge));
-    
-    copiedEngine->addCommand(0, move(ptr_recharge));
-    cout << "rech is coming" <<endl;
-    //convert unique_ptr into _shared_ptr
-    std::shared_ptr<Command> ptr_recharge_shared = std::move(ptr_recharge);
-    commandList.push_back(ptr_recharge_shared);
-    cout << "rech is coming" <<endl;
+    engine::RechargeCommand rechargeCommand(engine->getState().getPlayerList()[fighter]->getFighter());
+    std::unique_ptr<engine::Command> ptr_recharge (new engine::RechargeCommand(rechargeCommand));
+    engine->addCommand(0, move(ptr_recharge));
+    engine->update();
 }
 
-std::vector<shared_ptr<Command>> DeepAI::getCommand()
+void DeepAI::getCommand(shared_ptr<engine::Engine> engine)
 {
     int action = rand()%2;
-    std::shared_ptr<engine::Engine> engine;
-    std::vector<shared_ptr<Command>> commandList;
+    
     cout << "getting cmd" <<endl;
     switch (action)
     {
     case 0:
         cout << "getting att" <<endl;
-        storeAttackCommands(commandList, engine);
+        storeAttackCommands(engine, 0,1);
+        cout << "getting att" <<endl;
         break;
     case 1:
         cout << "getting def" <<endl;
-        storeDefenseCommands(commandList, engine);
+        storeDefenseCommands(engine,0);
         break;
     case 2:
         cout << "getting rech" <<endl;
-        storeRechargeCommands(commandList, engine);
+        storeRechargeCommands(engine, 0);
         break;
     default:
         break;
     }
-    return commandList;
+   
 }
 
 
@@ -98,71 +80,66 @@ void DeepAI::run(std::shared_ptr<engine::Engine> engine)
 {
    
     if(engine->getState().getCurrentPlayerID()==ArtificialId){
-        //cout << "in" <<endl;
         
         while (engine->getState().getPlayerList()[ArtificialId]->getFighter()->getStatus()!=DEAD)
         {
-            std::shared_ptr<Engine> copiedEngine;
-            //copy engine
+            auto copiedEngine = std::make_shared<Engine>();
             
             copyEngine(engine,copiedEngine);
 
             cout << "engine copied" <<endl;
-            std::vector<shared_ptr<Command>> commandList;
-            commandList = getCommand();
+          
+            std::shared_ptr<Command> commandList; 
+
+            getCommand(copiedEngine);
+            
             cout << "command init" <<endl;
            
+        //     std::shared_ptr<ai::DeepAiNode> ptrHeadNode(std::make_shared<DeepAiNode>());
 
-
-
-
-
-
-
-            // std::shared_ptr<ai::DeepAiNode> ptrHeadNode(std::make_shared<DeepAiNode>());
-
-            // std::vector<std::shared_ptr<ai::DeepAiNode>> childNodesList= ptrHeadNode->getChildDeepAiNodeList();
-            // cout << "ptr" <<endl;
-            //     std::shared_ptr<DeepAiNode> ptrChildNode(std::make_shared<DeepAiNode>());
-            //     ptrChildNode->setPtrParent(ptrHeadNode);
-            //     ptrChildNode->setExecutedCommand(commandList[0]);
-            //     childNodesList.push_back(ptrChildNode);
-            // cout << "ptr" <<endl;
-            // ptrHeadNode->setChildDeepAiNodeList(childNodesList);
-            //  cout << "ptr" <<endl;
+        //     std::vector<std::shared_ptr<ai::DeepAiNode>> childNodesList= ptrHeadNode->getChildDeepAiNodeList();
+        //     cout << "ptr" <<endl;
+        //         std::shared_ptr<DeepAiNode> ptrChildNode(std::make_shared<DeepAiNode>());
+        //         ptrChildNode->setPtrParent(ptrHeadNode);
+        //         ptrChildNode->setExecutedCommand(command);
+        //         childNodesList.push_back(ptrChildNode);
+        //     cout << "ptr" <<endl;
+        //     ptrHeadNode->setChildDeepAiNodeList(childNodesList);
+        //      cout << "ptr" <<endl;
           
-            // for (uint i = 0; i < ptrHeadNode->getChildDeepAiNodeList().size(); i++)
-            // {
-            //     for (uint j = 0; j < ptrHeadNode->getChildDeepAiNodeList()[i]->getChildDeepAiNodeList().size(); j++)
-            //     {
-            //         copyEngine(engine,copiedEngine);
-            //         ptrHeadNode->getChildDeepAiNodeList()[i]->getChildDeepAiNodeList()[j]->getExecutedCommand()->execute(copiedEngine->getState());
+        //     for (uint i = 0; i < ptrHeadNode->getChildDeepAiNodeList().size(); i++)
+        //     {
+        //         for (uint j = 0; j < ptrHeadNode->getChildDeepAiNodeList()[i]->getChildDeepAiNodeList().size(); j++)
+        //         {
+        //             copyEngine(engine,copiedEngine);
+        //             ptrHeadNode->getChildDeepAiNodeList()[i]->getChildDeepAiNodeList()[j]->getExecutedCommand()->execute(copiedEngine->getState());
                 
-            //         ptrHeadNode->getChildDeepAiNodeList()[i]->getChildDeepAiNodeList()[j]->setScore(evalSituation(copiedEngine));
+        //             ptrHeadNode->getChildDeepAiNodeList()[i]->getChildDeepAiNodeList()[j]->setScore(evalSituation(copiedEngine));
 
-            //     }
-            //     minimiseScore(ptrHeadNode->getChildDeepAiNodeList()[i]);
-            // }
-            // maximiseScore(ptrHeadNode);
+        //         }
+        //         minimiseScore(ptrHeadNode->getChildDeepAiNodeList()[i]);
+        //     }
+        //     maximiseScore(ptrHeadNode);
 
-            // int optimalCommandIndex=findOptimalCommandIndex(ptrHeadNode);
-            // executeOptimalCommand(engine,optimalCommandIndex,ptrHeadNode);
-            // engine->update();
+        //     int optimalCommandIndex=findOptimalCommandIndex(ptrHeadNode);
+        //     executeOptimalCommand(engine,optimalCommandIndex,ptrHeadNode);
+        //     engine->update();
         }
     }
 }
 
 void DeepAI::copyEngine (std::shared_ptr<engine::Engine> engine,std::shared_ptr<engine::Engine> copiedEngine){
     copiedEngine->setCurrentState(engine->getState());
-    // cout << "in copyengine" <<endl;
-    // copiedEngine->setCurrentState(move(engine->getState()));
-    // cout << "setState OK" <<endl;
-    // copiedEngine->setCurrentCommands(move(engine->getCurrentCommands()));
-    // cout << "comd ok" <<endl;
-    // copiedEngine->setChangeRound(engine->getChangeRound());
-    // cout << "round ok" <<endl;
-    // copiedEngine->setStop(engine->getStop());
-    // cout << "stop ok" <<endl;
+    cout << "in copyengine" <<endl;
+    copiedEngine->setCurrentState(move(engine->getState()));
+    cout << "setState OK" <<endl;
+    copiedEngine->setCurrentCommands(move(engine->getCurrentCommands()));
+    cout << "comd ok" <<endl;
+    copiedEngine->setChangeRound(engine->getChangeRound());
+    cout << "round ok" <<endl;
+    copiedEngine->setStop(engine->getStop());
+    
+    cout << "stop ok" <<endl;
 }
 
 int DeepAI::evalSituation(std::shared_ptr<engine::Engine> copiedEngine)

@@ -1,7 +1,20 @@
 #include "MoveArray.h"
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 using namespace state;
+
+MoveArray::MoveArray()
+{
+    width = 5;
+    height = 1;
+    int spriteSize;
+    sf::Sprite grid[width][height];
+    
+    
+
+
+}
 
 int MoveArray::getHeight()
 {

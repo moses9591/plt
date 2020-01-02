@@ -1,10 +1,15 @@
-#include <iostream>
-#include <state.h>
+#include "state.h"
 #include "string.h"
 #include "render.h"
 #include "engine.h"
-#include <unistd.h>
-#include <ai.h>
+#include "unistd.h"
+#include "ai.h"
+#include "client.h"
+
+
+#include <SFML/Graphics.hpp>
+
+#include <iostream>
 
 
 using namespace std;
@@ -12,9 +17,10 @@ using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
+using namespace client;
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
-#include <SFML/Graphics.hpp>
+
 
 void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine);
 bool iaTurn = false;
@@ -58,6 +64,19 @@ int main(int argc, char *argv[])
         std::cout << "Load Failed" << std::endl;
         system("Pause");
     }
+    sf::Sprite grid[3][1];
+    grid[0][1].setTexture(spriteSheet);
+    float x;
+    float y;
+    
+    grid[0][1].setPosition(x, y);
+    grid[0][1].setTextureRect(sf::IntRect(0,0, 100,100));
+    
+    grid[1][1].setTexture(spriteSheet2);
+    grid[1][1].setPosition(sf::Vector2f(500.f, 250.f));
+    grid[1][1].setTextureRect(sf::IntRect(0,0, 100,100));
+    
+
     sf::Sprite playerSprite2;
     
     playerSprite2.setTexture(spriteSheet2);
@@ -150,7 +169,10 @@ int main(int argc, char *argv[])
 
                 if (attackPress)
                 {
-                    playerSprite.move(385,0);
+
+                    grid[0][1].move(385,0);
+                    grid[0][1].move(50,0);
+
                     animation.Update(2, deltaTime);
                     playerSprite.setTextureRect(animation.uvRect);
 
@@ -166,8 +188,13 @@ int main(int argc, char *argv[])
                 window.draw(text2);
                 window.draw(hpBarP1);
                 window.draw(hpBarP2);
-                window.draw(playerSprite);
-                window.draw(playerSprite2);
+                // window.draw(playerSprite);
+                // window.draw(playerSprite2);
+                cout << "ok" << endl;
+                //for(int i = 1; i < 3; i++)
+                window.draw(grid[0][1]);
+                window.draw(grid[1][1]);
+                // window.draw(grid[5][1]);
 
                 window.display();
             }
@@ -374,6 +401,7 @@ int main(int argc, char *argv[])
 
             std::shared_ptr<Engine> engine = make_shared<Engine>();
 
+            
             engine->getState().setTerrain(SekuTerrain);
             engine->getState().initPlayers(); //getting the state by using engine
             engine->getState().setRound(1);
@@ -460,7 +488,7 @@ int main(int argc, char *argv[])
                     iaTurn =false;
                 }
             }
-        } else if(strcmp(argv[1], "demo") == 0)
+        }else if(strcmp(argv[1], "demo") == 0)
         {
             cout << "--------------------demo-------------------" << endl;
             sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone");
@@ -478,7 +506,7 @@ int main(int argc, char *argv[])
             engine->getState().registerObserver(&stateLayer);
             
             TextureManager *textureManager = textureManager->getInstance();
-            if (textureManager->load())
+            if (textureManager->load( ))
             {
                 cout << "texuture manager ok!\n" << endl;
             }
@@ -494,20 +522,27 @@ int main(int argc, char *argv[])
             cout << "A : Attack, R: Recharge mana, D: Defend" << endl;
             cout << "Press T : Turn Over, IA plays" << endl;
            
-           
+            bool randomTurn = false;
             while (window.isOpen()) {
-                if(!iaTurn){
+                if(!randomTurn){
                     // Manage user inputs
+                    cout << "random ai turn" << endl;
+                    RandomAI randomAI(1); //AiID == 0
+                    randomAI.run(engine);
+                    randomTurn = true;
+                } else {
+                    cout << "heuristic ai turn " << endl;
                     HeuristicAI heuristicAI(0);
                     heuristicAI.run(engine);
-                    iaTurn = true;
-                } else {
-                    cout << "run ai" << endl;
-                    RandomAI randomAI(0); //AiID == 0
-                    randomAI.run(engine);
-                    iaTurn =false;
+                    
+                    //iaTurn =false;
                 }
             }
+        }else if(strcmp(argv[1], "thread") == 0)
+        {
+            Modularisation modularisation;
+            modularisation.run();
+            
         }
     }
 }

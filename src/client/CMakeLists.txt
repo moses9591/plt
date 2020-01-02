@@ -9,6 +9,10 @@ generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../render.dia")
 file(GLOB_RECURSE client_sources *.cpp)
 list(REMOVE_ITEM client_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 
+# Find library jsoncpp
+set(jsoncpp_include_dir "${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
+file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
+
 # Build the "client" library, add required include and link against dependencies
 add_library(${lib_client_target} STATIC ${client_sources})
 add_dependencies(${lib_client_target} generate-headers)
