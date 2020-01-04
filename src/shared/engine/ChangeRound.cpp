@@ -10,7 +10,7 @@ using namespace state;
 
 ChangeRound::ChangeRound(std::shared_ptr<Fighter> currentFighter):currentFighter(currentFighter)
 {
-
+    id = JSON_CHANGE_ROUND;
 }
 
 void ChangeRound::execute(State& state)
@@ -47,4 +47,12 @@ void ChangeRound::execute(State& state)
         cout<<"player 1 turn" <<endl;
         state.setCurrentPlayerID(1);
     }
+}
+
+Json::Value ChangeRound::serialize()
+{
+	Json::Value newCommand;	
+	newCommand["id"] = id;
+	
+	return newCommand;
 }

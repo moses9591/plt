@@ -13,7 +13,7 @@ using namespace std;
 
 RechargeCommand::RechargeCommand (std::shared_ptr<Fighter> fighter):fighter(fighter)
 {
-
+    id = JSON_RECHARGE;
 }
 //Functions
 void RechargeCommand::execute (state::State& state){
@@ -51,4 +51,12 @@ void RechargeCommand::execute (state::State& state){
     else if(fighter->getStatus()==DEAD){
         cout<<"Already dead!"<<endl;
     }
+}
+
+Json::Value RechargeCommand::serialize()
+{
+	Json::Value newCommand;	
+	newCommand["id"] = id;
+	
+	return newCommand;
 }

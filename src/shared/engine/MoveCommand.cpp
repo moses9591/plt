@@ -13,7 +13,7 @@ using namespace std;
 
 MoveCommand:: MoveCommand (std::shared_ptr<state::Fighter> fighter, std::shared_ptr<state::Position> destination):fighter(fighter),destination(destination)
 {
-
+    id = JSON_MOVE;
 }
 
 void MoveCommand::execute (state::State& state)
@@ -29,7 +29,13 @@ void MoveCommand::execute (state::State& state)
         }
 }
 
-
+Json::Value MoveCommand::serialize()
+{
+	Json::Value newCommand;	
+	newCommand["id"] = id;
+	
+	return newCommand;
+}
 
 
 

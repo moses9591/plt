@@ -13,7 +13,7 @@ using namespace std;
 //Contructor
 AttackCommand::AttackCommand (std::shared_ptr<Fighter> attacker, std::shared_ptr<Fighter> target):attacker(attacker),target(target)
 {
-
+    id = JSON_ATTACK;
 }
 
 //Functions
@@ -106,4 +106,14 @@ void AttackCommand::execute (state::State& state){
         usleep(waitingTime);
     }
    
+}
+
+Json::Value AttackCommand::serialize()
+{
+	Json::Value newCommand;
+	newCommand["id"] = id;
+	newCommand["manaAttacker"] = attacker->getMana();
+    newCommand["heathAttacker"] = attacker->getHealthPoints();
+	
+	return newCommand;
 }

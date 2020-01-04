@@ -1,8 +1,11 @@
 #include "Engine.h"
 #include "../engine.h"
-#include <iostream>
 #include <unistd.h>
 #include "../state.h"
+#include "../../../extern/jsoncpp-1.8.0/jsoncpp.cpp"
+
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 using namespace engine;
@@ -11,6 +14,8 @@ using namespace state;
 
 Engine::Engine () : currentState(){
 	changeRound = true;
+	record["size"] = 0;
+	record["tabCommand"][0] = "";
 }
 
 
@@ -27,7 +32,73 @@ State& Engine::getState()
 
 void Engine::addCommand(int priority, std::unique_ptr<Command> ptr_cmd)
 {
+	Json::Value newCommand = ptr_cmd->serialize();
+	record["tabCommand"][record["size"].asUInt()] = newCommand;
+	record["size"] = record["size"].asUInt() + 1;
+
     currentCommands[priority] = move(ptr_cmd);
+}
+
+Json::Value Engine::getRecord()
+{
+	return record;
+}
+
+
+void Engine::replayCommands(std::string fileName){
+	cout << "Replay is starting" << endl;
+
+	// Opening the .txt file
+	ifstream commandsFile(fileName);
+	if (commandsFile){
+		Json::Value root;
+		Json::Reader reader;
+		if(!reader.parse(commandsFile, root)){
+			cout 	<< "Failed to parse commands\n" << reader.getFormattedErrorMessages();
+		}
+		// Closing the file in reading mode
+		commandsFile.close();
+						
+		cout << "Size of the commands table of "<< fileName << " : " << root["tabCommand"].size() << endl;
+						
+		// Converting commands from Json to objects
+		for (unsigned int i = 0; i < root["tabCommand"].size(); i++){
+			// Move case
+			
+
+			// Attack case
+			if(root["tabCommand"][i]["id"].asUInt() == 1){
+				AttackCommand attackCommand(currentState.getPlayerList()[0]->getFighter(),currentState.getPlayerList()[1]->getFighter());				
+				unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
+				addCommand(0, move(ptr_attack));
+
+				ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+				unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+				addCommand(1, move(ptr_endEntityRound));
+
+				update();
+
+			}
+
+			// End entity round case
+			else if(root["tabCommand"][i]["id"].asUInt() == 3){
+				ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+					
+				unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+				addCommand(0, move(ptr_endEntityRound));
+				update();
+
+			}
+			else{
+				cout << "The command " << i << " is unknown" << endl;
+			}
+			usleep(500000);						
+		}								
+	}				
+	else{
+		cerr << "Unable to open the commands file (read)" << endl;
+	}							
+	cout << "The replay has ended" << endl;
 }
 
 void Engine::update()
@@ -141,11 +212,7 @@ bool Engine::getStop (){
 void Engine::setCurrentState (state::State state){
 	cout << "currentState" << endl;
 	state.setCurrentPlayerID(this->currentState.getCurrentPlayerID());
-	// state.
-	// this->currentState.getPlayerList() = state.getPlayerList();
-	// this->currentState.getPlayerList()[0]->getFighter() = state.getPlayerList()[0]->getFighter();
-	// this->currentState.getPlayerList()[1]->getFighter() = state.getPlayerList()[1]->getFighter();
-	
+		
 	cout << "currentState ok" << endl;
 }
 

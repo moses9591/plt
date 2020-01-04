@@ -1,17 +1,13 @@
 
 set(lib_client_target client_static)
 
-# Generate header files from dia UML files
+# Generate header files from dia UML files
 generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../client.dia")
 generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../render.dia")
 
 # Find all source files to include in library
 file(GLOB_RECURSE client_sources *.cpp)
 list(REMOVE_ITEM client_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
-
-# Find library jsoncpp
-set(jsoncpp_include_dir "${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
-file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 
 # Build the "client" library, add required include and link against dependencies
 add_library(${lib_client_target} STATIC ${client_sources})
@@ -34,4 +30,3 @@ if(BUILD_CODE_COVERAGE)
 endif()
 
 # vim: set sw=2 sts=2 et:
-

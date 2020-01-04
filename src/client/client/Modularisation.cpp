@@ -7,6 +7,7 @@
 #include <thread>
 #include <mutex>
 #include <fstream>
+#include "../client.h"
 
 
 
@@ -22,6 +23,7 @@ using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
+
 
 bool iaTurn1 = false;
 void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine);
@@ -63,7 +65,8 @@ void Modularisation::engineThread(){
  * 
  * 
  */
-void Modularisation::clientThread(){
+void Modularisation::clientThread()
+{
     //Initialize the window
     sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone!");
 
@@ -94,21 +97,91 @@ void Modularisation::clientThread(){
     while (window.isOpen()){
       
         
-        while (1){
-            if(!iaTurn1){
-                    // Manage user inputs
-                    handleInputs1(window,engine);
-                    
-                } else {
-                    cout << "run ai" << endl;
-                    ai::HeuristicAI heuristicAi1(1);
-                    heuristicAi1.run(engine);
-                    iaTurn1 =false;
-                }
-
+        while (1)
+        {
+            if(!iaTurn1)
+            {
+                // Manage user inputs
+                handleInputs1(window,engine);   
+            } else {
+                cout << "run ai" << endl;
+                ai::HeuristicAI heuristicAi1(1);
+                heuristicAi1.run(engine);
+                iaTurn1 =false;
+            }
         }
     }
 }
+
+//Run for the record test
+void Modularisation::record(){
+    cout<<"---- RECORD TEST ----"<<endl;
+
+    //Launch engine in another thread
+    std::thread t1(&Modularisation::engineThread,this);
+    std::thread t2(&Modularisation::clientThread,this);
+
+    t1.join();
+    t2.join();
+
+    Json::FastWriter fastWriter;
+    std::string output = fastWriter.write(engine->getRecord());
+
+    ofstream recordFile("record.txt");
+    if(recordFile){
+         cout<<"Recording file opened with success"<<endl;
+        recordFile<<output<<endl;
+    }else{
+        cout<<"Recording file opening failed"<<endl;
+    }
+}
+
+//Run to play the .txt file
+void Modularisation::play(){
+    cout << "---- PLAY TEST ----\n" << endl;
+
+	std::string commandsFile = "record.txt";
+								
+    //Initialize the window
+    sf::RenderWindow window(sf::VideoMode(1950, 900), "Fire Emblem");
+
+    //Engine Thread
+    std::thread t1(&Modularisation::engineThread,this);
+    t1.join();
+
+    //Client Side (Render)
+    engine->getState().setTerrain(SekuTerrain);
+    cout << "terrain ok" << endl;
+   
+    engine->getState().setRound(1);
+    
+    //registering statelayer to observer
+    StateLayer stateLayer(window, engine->getState());
+    engine->getState().registerObserver(&stateLayer);
+
+    TextureManager *textureManager = textureManager->getInstance();
+    if (textureManager->load())
+    {
+        cout << "texuture manager ok!" << endl;
+    }
+    else
+    {
+        cout << "texuture manager loading failed!" << endl;
+        //return EXIT_FAILURE;
+    }
+
+    stateLayer.draw();
+
+    while (window.isOpen()){
+        while (1)
+        {
+            engine->replayCommands(commandsFile);
+        }
+    }		
+}
+
+
+
 void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
     sf::Event event{};
     while (window.pollEvent(event))
@@ -227,95 +300,6 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
     }
 }
 
-// Run for the record test
-// void Modularisation::runRecord(){
-//     cout<<"---- RECORD TEST ----"<<endl;
 
-//     //Launch engine in another thread
-//     std::thread t1(&Modularisation::engineThread,this);
-//     std::thread t2(&Modularisation::clientThread,this);
-
-//     t1.join();
-//     t2.join();
-
-//     Json::FastWriter fastWriter;
-//     std::string output = fastWriter.write(engine.getRecord());
-
-//     ofstream recordFile("record.txt");
-//     if(recordFile){
-//          cout<<"Recording file opened with success"<<endl;
-//         recordFile<<output<<endl;
-//     }else{
-//         cout<<"Recording file opening failed"<<endl;
-//     }
-// }
-
-// Run to play the .txt file
-// void Modularisation::runPlay(){
-//     cout << "---- PLAY TEST ----\n" << endl;
-
-// 	std::string commandsFile = "record.txt";
-								
-//     //Initialize the window
-//     sf::RenderWindow window(sf::VideoMode(1950, 900), "Fire Emblem");
-
-//     //Engine Thread
-//     std::thread t1(&Modularisation::engineThread,this);
-//     t1.join();
-
-//     //Client Side (Render)
-//     StateLayer stateLayer(engine.getState(),window);
-//     stateLayer.initTextureAreas(engine.getState());
-
-//     StateLayer* ptr_stateLayer=&stateLayer;
-//     engine.getState().registerObserver(ptr_stateLayer);
-
-//     Engine* ptr_engine=&engine;
-//     stateLayer.registerRenderObserver(ptr_engine);
-//     bool booting = true;
-//     bool alreadyReplayed = false;
-
-//     while (window.isOpen()){
-//         sf::Event event;
-
-//         //Initialize the screen by drawing the default State
-//         if(booting){
-//             // Draw all the display on the screen
-//             stateLayer.draw(engine.getState());
-//             cout << "Start of the game.\n" << endl;
-//             booting = false;
-//         }
-
-//         //while (1){
-//             window.pollEvent(event);
-
-// 		    // Open file and read the commands
-// 			engine.replayCommands(commandsFile);
-// 		    alreadyReplayed = true;
-
-//             //Check if all ennemy units are dead or not
-//             if(engine.checkGameEnd()==true){
-//                 window.close();
-//                 cout<<"Game END"<<endl;
-//                 break;
-//             }
-
-//             //Check if all units had played
-//             if(engine.checkRoundEnd()){
-//                 cout<<"round  change"<<endl;
-//                 engine.checkRoundStart();
-//                 StateEvent stateEvent(PLAYERCHANGE);
-//                 engine.getState().notifyObservers(stateEvent, engine.getState());
-//             }
-
-//             if (event.type == sf::Event::Closed){
-//                     window.close();
-//             }
-
-//             engine.screenRefresh();
-//             usleep(50000);
-//         //}
-//     }			
-// }
 
 

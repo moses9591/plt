@@ -2,8 +2,9 @@
 #include "../engine.h"
 #include "../state.h"
 #include "../ai.h"
-#include <iostream>
 #include <unistd.h>
+
+#include <iostream>
 
 using namespace state;
 using namespace engine;

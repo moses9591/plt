@@ -13,7 +13,7 @@ using namespace state;
 
 DefenseCommand::DefenseCommand(std::shared_ptr<Fighter> isDefending) : isDefending(isDefending)
 {
-    
+    id = JSON_DEFENSE;
 }
 //Functions
 void DefenseCommand::execute(state::State &state)
@@ -70,4 +70,12 @@ void DefenseCommand::execute(state::State &state)
     }
     usleep(waitingTime);
     
+}
+
+Json::Value DefenseCommand::serialize()
+{
+	Json::Value newCommand;	
+	newCommand["id"] = id;
+	
+	return newCommand;
 }

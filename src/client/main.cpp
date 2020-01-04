@@ -1,15 +1,18 @@
 #include "state.h"
-#include "string.h"
 #include "render.h"
 #include "engine.h"
 #include "unistd.h"
 #include "ai.h"
 #include "client.h"
 
+#include "string.h"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 #include <iostream>
+#include <thread>
+#include <mutex>
 
 
 using namespace std;
@@ -18,6 +21,7 @@ using namespace render;
 using namespace engine;
 using namespace ai;
 using namespace client;
+
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 
@@ -542,7 +546,10 @@ int main(int argc, char *argv[])
         {
             Modularisation modularisation;
             modularisation.run();
-            
+        }else if(strcmp(argv[1], "record") == 0)
+        {
+            Modularisation modularisation;
+            modularisation.record();
         }
     }
 }
