@@ -70,19 +70,17 @@ void AttackCommand::execute (state::State& state){
             target->setStatus(DEAD);
             target->setHealthPoints(0);
             // animation dead
-            cout<< targetName<< " has " << target->getHealthPoints() <<" health points now."<<endl;
+            cout<< targetName<< " has " << target->getHealthPoints() <<" now health points."<<endl;
             cout << "The opponent is dead. You win! " << endl;
             sleep(2);
+            
             
         }
         
         cout<< targetName<< " has " << target->getHealthPoints() <<" health points now."<<endl;
 
         //target->setHealthPoints(target->getHealthPoints());
-        
-
-
-        
+  
     }
     else if(attacker->getStatus()==DEAD){
         cout<<"Already dead!"<<endl;

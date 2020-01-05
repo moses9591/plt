@@ -93,6 +93,7 @@ void Fighter::fight(std::shared_ptr<Fighter> target, Attack attack)
 				status = WAITING;
 			}
 		}
+		
 	}else{
 		cout << "Please recharge! ;)" << endl;
 		status = WAITING;

@@ -348,8 +348,16 @@ int main(int argc, char *argv[])
             stateLayer.draw();
             while (window.isOpen()) {
                 handleInputs(window,engine);
+            
+                if(engine->checkGameEnd()==true){
+                    window.close();
+                    cout<<"Game END"<<endl;
+                    break;
+                }
             }
-        }else if (strcmp(argv[1], "random_ai") == 0)
+
+        }
+        else if (strcmp(argv[1], "random_ai") == 0)
         {    
             cout << "--------------------random ai-------------------" << endl;
             sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone");

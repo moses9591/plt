@@ -10,9 +10,6 @@ MoveArray::MoveArray()
     height = 1;
     int spriteSize;
     sf::Sprite grid[width][height];
-    
-    
-
 
 }
 

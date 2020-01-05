@@ -129,7 +129,7 @@ void Modularisation::record(){
 
     ofstream recordFile("record.txt");
     if(recordFile){
-         cout<<"Recording file opened with success"<<endl;
+        cout<<"Recording file opened with success"<<endl;
         recordFile<<output<<endl;
     }else{
         cout<<"Recording file opening failed"<<endl;

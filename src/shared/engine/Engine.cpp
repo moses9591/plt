@@ -133,10 +133,14 @@ bool Engine::checkGameEnd(){
 	for (unsigned int i = 0; i < currentState.getPlayerList().size(); i++){
 		// For each Fighter belonging to each player	
 			// As long as another player has his Fighter alive the game isn't finished
-			if(currentState.getPlayerList()[i]->getFighter()->getStatus()==DEAD){
+			if(currentState.getPlayerList()[i]->getFighter()->getStatus()!=DEAD){
 
-				cout<<"The player "<< currentState.getPlayerList()[i]->getPlayerName()<<" lost the game!!!"<<endl;
+				//cout<<"The player "<< currentState.getPlayerList()[i]->getPlayerName()<<" still alive!!!"<<endl;
 				gameEnd=false;
+			}
+			if(currentState.getPlayerList()[i]->getFighter()->getHealthPoints() <=0)
+			{
+				gameEnd = true;
 			}
 	}
 	return gameEnd;
