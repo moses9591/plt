@@ -189,6 +189,7 @@ int Fighter::getMana()
 void Fighter::setPosition(std::shared_ptr<Position> position)
 {
 	this->position = position;
+	
 }
 
 std::shared_ptr<Position> Fighter::getPosition()

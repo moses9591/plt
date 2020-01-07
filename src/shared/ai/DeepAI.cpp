@@ -83,7 +83,8 @@ void DeepAI::run(std::shared_ptr<engine::Engine> engine)
         
         while (engine->getState().getPlayerList()[ArtificialId]->getFighter()->getStatus()!=DEAD)
         {
-            auto copiedEngine = std::make_shared<Engine>();
+            // auto copiedEngine = std::make_shared<Engine>();
+            auto copiedEngine = make_shared<Engine>();
             
             copyEngine(engine,copiedEngine);
 

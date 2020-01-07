@@ -12,12 +12,19 @@ using namespace engine;
 using namespace state;
 
 
-Engine::Engine () : currentState(){
+Engine::Engine (state::State state)
+{
+	
+	this->currentState = std::move(state);
 	changeRound = true;
 	record["size"] = 0;
 	record["tabCommand"][0] = "";
 }
 
+Engine::Engine ()
+{
+
+}
 
 
 Engine::~Engine()

@@ -1,4 +1,5 @@
 #include "Position.h"
+#include <iostream>
 
 using namespace std;
 using namespace state;
@@ -16,7 +17,8 @@ Position::Position(float x,float y){
 
 void Position::setX(float x)
 {
-    this->x=x;
+    this->x=x;  
+    std::cout << this->x << std::endl;
 }
 
 void Position::setY(float y)

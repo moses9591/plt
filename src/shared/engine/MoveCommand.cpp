@@ -23,8 +23,14 @@ void MoveCommand::execute (state::State& state)
         if(fighter->getStatus() != DEAD)
         {
             if(moveFeasible){
-                fighter->setX(destination->getX());
-                fighter->setY(destination->getY()); 
+                cout << fighter->getX() <<endl;
+                fighter->setX(destination->getX()-50);
+                //fighter->setY(100); 
+                vector<shared_ptr<Player>> playerList = state.getPlayerList();
+                Player player = *state.getPlayerList()[0].get();
+                player.setFighter(fighter);
+                playerList[0] = make_shared<Player>(player);
+                state.setPlayerList(playerList);
             }
         }
 }

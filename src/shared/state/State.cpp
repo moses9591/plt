@@ -80,6 +80,13 @@ std::vector<std::shared_ptr<Player>> State::getPlayerList () //tableau de ref ve
     return playerList;
 }
 
+void State::setPlayerList(std::vector<std::shared_ptr<Player>>  playerList)
+{
+    this->playerList = playerList;
+    StateEvent stateEvent(FIGHTERCHANGED);
+    this->notifyObservers(stateEvent, *this); 
+}
+
 bool State::getEndFight()
 {
     return endFight;

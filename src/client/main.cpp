@@ -321,13 +321,16 @@ int main(int argc, char *argv[])
         {
             cout<<"--- Moteur du jeu ---"<<endl;
             
-            
+            State state;
             sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone");
-			
-            std::shared_ptr<Engine> engine = make_shared<Engine>();
-            engine->getState().setTerrain(SekuTerrain);
-            engine->getState().initPlayers(); //getting the state by using engine
-            engine->getState().setRound(1);
+
+            
+
+            
+
+            // engine->getState().setTerrain(SekuTerrain);
+            // engine->getState().initPlayers(); //getting the state by using engine
+            // engine->getState().setRound(1);
            
 
             TextureManager *textureManager = textureManager->getInstance();
@@ -342,6 +345,12 @@ int main(int argc, char *argv[])
             }
 
             // //registering statelayer to observer
+            
+            state.setTerrain(SekuTerrain);
+            state.initPlayers();
+            state.setRound(1);
+            std::shared_ptr<Engine> engine = make_shared<Engine>(state);
+            
             StateLayer stateLayer(window, engine->getState());
             engine->getState().registerObserver(&stateLayer);
 
@@ -590,7 +599,6 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                                                     engine->getState().getPlayerList()[1]->getFighter());
                         unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
                         engine->addCommand(0, move(ptr_attack));
-
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
@@ -648,10 +656,24 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }       
                 }
-                if(event.key.code == sf::Keyboard::Left or event.key.code == sf::Keyboard::Right)
+                if(event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
+                        // cout << "lancement commande movement" <<endl;
+                        // State state = engine->getState();
+                        // shared_ptr<Fighter> fighter = state.getPlayerList()[0]->getFighter();
+                        // fighter->setX(400);
+                        // fighter->setY(100); 
+                        // vector<shared_ptr<Player>> playerList = state.getPlayerList();
+                        // Player player = *state.getPlayerList()[0].get();
+                        // player.setFighter(fighter);
+                        // playerList[0] = make_shared<Player>(player);
+                        // state.setPlayerList(playerList);
+                        // engine->setCurrentState(state);
+                        // StateEvent stateEvent(FIGHTERCHANGED);
+                        // engine->getState().notifyObservers(stateEvent, engine->getState());
+
                         std::cout << "Movement is coming for player 0" << std::endl;
                         MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
                                                 engine->getState().getPlayerList()[0]->getFighter()->getPosition());
@@ -661,9 +683,25 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
+
+                        // cout << "lancement commande movement" <<endl;
+                        // State state = engine->getState();
+                        // shared_ptr<Fighter> fighter = state.getPlayerList()[0]->getFighter();
+                        // //fighter->setPosition();
+                        // fighter->setX(400);
+                        // fighter->setY(100); 
+                        // vector<shared_ptr<Player>> playerList = state.getPlayerList();
+                        // Player player = *state.getPlayerList()[0].get();
+                        // player.setFighter(fighter);
+                        // playerList[0] = make_shared<Player>(player);
+                        // state.setPlayerList(playerList);
+                        // engine->setCurrentState(state);
+                        // StateEvent stateEvent(FIGHTERCHANGED);
+                        // engine->getState().notifyObservers(stateEvent, engine->getState());
+
                         std::cout << "Movement is coming for player 1" << std::endl;
-                        MoveCommand moveCommand(engine->getState().getPlayerList()[1]->getFighter(),
-                                                engine->getState().getPlayerList()[1]->getFighter()->getPosition());
+                        MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
+                                                engine->getState().getPlayerList()[0]->getFighter()->getPosition());
                         unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
                         engine->addCommand(0, move(ptr_move));
 
