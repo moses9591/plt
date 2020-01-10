@@ -115,7 +115,7 @@ void Modularisation::clientThread()
 
 //Run for the record test
 void Modularisation::record(){
-    cout<<"---- RECORD TEST ----"<<endl;
+    cout<<"---- recording----"<<endl;
 
     //Launch engine in another thread
     std::thread t1(&Modularisation::engineThread,this);
@@ -126,7 +126,7 @@ void Modularisation::record(){
 
     Json::FastWriter fastWriter;
     std::string output = fastWriter.write(engine->getRecord());
-
+    cout << "fastWriter ok" << endl;
     ofstream recordFile("record.txt");
     if(recordFile){
         cout<<"Recording file opened with success"<<endl;

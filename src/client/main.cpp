@@ -357,10 +357,11 @@ int main(int argc, char *argv[])
             stateLayer.draw();
             while (window.isOpen()) {
                 handleInputs(window,engine);
+                //cout << engine->checkGameEnd() << endl;
             
-                if(engine->checkGameEnd()==true){
+                if(engine->checkGameEnd()==0){
                     window.close();
-                    cout<<"Game END"<<endl;
+                    cout<<"Game Over"<<endl;
                     break;
                 }
             }
@@ -567,6 +568,10 @@ int main(int argc, char *argv[])
         {
             Modularisation modularisation;
             modularisation.record();
+        }else if(strcmp(argv[1], "play") == 0)
+        {
+            Modularisation modularisation;
+            modularisation.play();
         }
     }
 }

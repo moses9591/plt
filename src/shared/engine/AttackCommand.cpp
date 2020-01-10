@@ -110,8 +110,9 @@ Json::Value AttackCommand::serialize()
 {
 	Json::Value newCommand;
 	newCommand["id"] = id;
-	newCommand["manaAttacker"] = attacker->getMana();
-    newCommand["heathAttacker"] = attacker->getHealthPoints();
+    newCommand["CommandTypeId"] = 2;
+    newCommand["idPlayer"] = this->id;
+    
 	
 	return newCommand;
 }

@@ -134,7 +134,7 @@ void Engine::update()
 }
 
 bool Engine::checkGameEnd(){
-	bool gameEnd = true;
+	bool gameEnd = 1;
 
 	// For each player
 	for (unsigned int i = 0; i < currentState.getPlayerList().size(); i++){
@@ -143,11 +143,11 @@ bool Engine::checkGameEnd(){
 			if(currentState.getPlayerList()[i]->getFighter()->getStatus()!=DEAD){
 
 				//cout<<"The player "<< currentState.getPlayerList()[i]->getPlayerName()<<" still alive!!!"<<endl;
-				gameEnd=false;
+				gameEnd=1;
 			}
-			if(currentState.getPlayerList()[i]->getFighter()->getHealthPoints() <=0)
+			if(currentState.getPlayerList()[i]->getFighter()->getHealthPoints() ==0)
 			{
-				gameEnd = true;
+				gameEnd = 0;
 			}
 	}
 	return gameEnd;
