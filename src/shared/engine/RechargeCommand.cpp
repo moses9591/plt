@@ -57,6 +57,7 @@ Json::Value RechargeCommand::serialize()
 {
 	Json::Value newCommand;	
 	newCommand["id"] = id;
+    newCommand["CommandTypeId"] = 3;
 	
 	return newCommand;
 }

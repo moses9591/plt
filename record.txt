@@ -1,0 +1,2 @@
+{"size":17,"tabCommand":[{"CommandTypeId":1,"id":1,"idPlayer":1},{"CommandTypeId":4,"id":4},{"CommandTypeId":1,"id":1,"idPlayer":1},{"CommandTypeId":4,"id":4},{"CommandTypeId":1,"id":1,"idPlayer":1},{"CommandTypeId":4,"id":4},{"CommandTypeId":1,"id":1,"idPlayer":1},{"CommandTypeId":4,"id":4},{"CommandTypeId":1,"id":1,"idPlayer":1},{"CommandTypeId":4,"id":4},{"CommandTypeId":1,"id":1,"idPlayer":1},{"CommandTypeId":4,"id":4},{"CommandTypeId":3,"id":3},{"CommandTypeId":4,"id":4},{"CommandTypeId":2,"id":2},{"CommandTypeId":4,"id":4},{"CommandTypeId":1,"id":1,"idPlayer":1}]}
+

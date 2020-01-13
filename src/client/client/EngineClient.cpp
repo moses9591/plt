@@ -52,7 +52,7 @@ void EngineClient::runEngine()
     engine->getState().registerObserver(&stateLayer);
 
     stateLayer.draw();
-    while (window.isOpen()) {
+    while (window.isOpen()){
         handleInputsClient(window,engine);
         //cout << engine->checkGameEnd() << endl;
     

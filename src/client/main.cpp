@@ -256,10 +256,15 @@ int main(int argc, char *argv[])
                 if(!iaTurn){
                     // Manage user inputs
                     handleInputs(window,engine);
+                    if(engine->checkGameEnd()==0){
+                        window.close();
+                        cout<<"Game Over"<<endl;
+                        break;
+                    }
                     
                 } else {
                     cout << "run ai" << endl;
-                    RandomAI randomAi(0); //AiID == 0
+                    RandomAI randomAi(1); //AiID == 0
                     randomAi.run(engine);
                     iaTurn =false;
                 }
@@ -305,6 +310,11 @@ int main(int argc, char *argv[])
                 if(!iaTurn){
                     // Manage user inputs
                     handleInputs(window,engine);
+                    if(engine->checkGameEnd()==0){
+                        window.close();
+                        cout<<"Game Over"<<endl;
+                        break;
+                    }
                     
                 } else {
                     cout << "run ai" << endl;
@@ -352,6 +362,11 @@ int main(int argc, char *argv[])
                 if(!iaTurn){
                     // Manage user inputs
                     handleInputs(window,engine);
+                    if(engine->checkGameEnd()==0){
+                        window.close();
+                        cout<<"Game Over"<<endl;
+                        break;
+                    }
                     
                 } else {
                     cout << "run ai" << endl;
@@ -362,7 +377,7 @@ int main(int argc, char *argv[])
             }
         }else if(strcmp(argv[1], "demo") == 0)
         {
-            cout << "--------------------demo-------------------" << endl;
+            cout << "------------------demo_ai-------------------" << endl;
             sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone");
 
 
@@ -389,25 +404,31 @@ int main(int argc, char *argv[])
             }
             stateLayer.draw();
 
-            cout << " User plays first" << endl;
-            cout << "Use the following rules to play." << endl;
-            cout << "A : Attack, R: Recharge mana, D: Defend" << endl;
-            cout << "Press T : Turn Over, IA plays" << endl;
-           
-            bool randomTurn = false;
+            cout << " Random_ai vs Heurestic_ai" << endl;
+            
+            //bool randomTurn = false;
             while (window.isOpen()) {
-                if(!randomTurn){
+                if(!iaTurn){
                     // Manage user inputs
-                    cout << "random ai turn" << endl;
-                    RandomAI randomAI(1); //AiID == 0
+                    cout << "------------random ai turn------------" << endl;
+                    RandomAI randomAI(1); 
                     randomAI.run(engine);
-                    randomTurn = true;
+                    iaTurn = true;
+                    if(engine->checkGameEnd()==0){
+                        window.close();
+                        cout<<"Game Over"<<endl;
+                        break;
+                    }
                 } else {
-                    cout << "heuristic ai turn " << endl;
+                    cout << "-------heuristic ai turn------------ " << endl;
                     HeuristicAI heuristicAI(0);
                     heuristicAI.run(engine);
-                    
-                    //iaTurn =false;
+                    iaTurn = false;
+                    if(engine->checkGameEnd()==0){
+                        window.close();
+                        cout<<"Game Over"<<endl;
+                        break;
+                    }
                 }
             }
         }else if(strcmp(argv[1], "thread") == 0)

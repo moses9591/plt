@@ -54,6 +54,7 @@ Json::Value ChangeRound::serialize()
 {
 	Json::Value newCommand;	
 	newCommand["id"] = id;
+    newCommand["CommandTypeId"] = 4;
 	
 	return newCommand;
 }

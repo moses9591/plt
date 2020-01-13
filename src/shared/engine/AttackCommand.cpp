@@ -110,7 +110,7 @@ Json::Value AttackCommand::serialize()
 {
 	Json::Value newCommand;
 	newCommand["id"] = id;
-    newCommand["CommandTypeId"] = 2;
+    newCommand["CommandTypeId"] = 1;
     newCommand["idPlayer"] = this->id;
     
 	

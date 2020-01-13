@@ -97,10 +97,16 @@ void Modularisation::clientThread()
             if(!iaTurn1)
             {
                 // Manage user inputs
-                handleInputs1(window,engine);   
+                handleInputs1(window,engine); 
+                if(engine->checkGameEnd()==0){
+                    window.close();
+                    cout<<"Game Over"<<endl;
+                    break;
+                }  
+          
             } else {
                 cout << "run ai" << endl;
-                ai::HeuristicAI heuristicAi1(1);
+                ai::HeuristicAI heuristicAi1(0);
                 heuristicAi1.run(engine);
                 iaTurn1 =false;
             }
@@ -139,7 +145,7 @@ void Modularisation::play(){
 	std::string commandsFile = "record.txt";
 								
     //Initialize the window
-    sf::RenderWindow window(sf::VideoMode(1950, 900), "Fire Emblem");
+    sf::RenderWindow window(sf::VideoMode(1950, 900), "Fighter Zone");
 
     //Engine Thread
     std::thread t1(&Modularisation::engineThread,this);

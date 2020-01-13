@@ -79,14 +79,38 @@ void Engine::replayCommands(std::string fileName){
 				unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
 				addCommand(0, move(ptr_attack));
 
-				ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
-				unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
-				addCommand(1, move(ptr_endEntityRound));
+				// ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+				// unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+				// addCommand(1, move(ptr_endEntityRound));
 
 				update();
 
 			}
+			//Defense case 
+			else if(root["tabCommand"][i]["id"].asUInt() == 2){
+				DefenseCommand defenseCommand(currentState.getPlayerList()[0]
+                                                        ->getFighter());
+				unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
+				addCommand(0, move(ptr_defense));
 
+				// ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+				// unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+				// addCommand(1, move(ptr_endEntityRound));
+
+				update();
+			}
+			//recharge case
+			else if(root["tabCommand"][i]["id"].asUInt() == 3){
+				RechargeCommand rechargeCommand(currentState.getPlayerList()[0]->getFighter());
+				unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
+				addCommand(0, move(ptr_recharge));
+
+				// ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+				// unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+				// addCommand(1, move(ptr_endEntityRound));
+
+				update();
+			}
 			// End entity round case
 			else if(root["tabCommand"][i]["id"].asUInt() == 3){
 				ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
@@ -145,7 +169,8 @@ bool Engine::checkGameEnd(){
 				//cout<<"The player "<< currentState.getPlayerList()[i]->getPlayerName()<<" still alive!!!"<<endl;
 				gameEnd=1;
 			}
-			if(currentState.getPlayerList()[i]->getFighter()->getHealthPoints() ==0)
+			if(currentState.getPlayerList()[0]->getFighter()->getHealthPoints() ==0
+			 || currentState.getPlayerList()[1]->getFighter()->getHealthPoints() ==0 )
 			{
 				gameEnd = 0;
 			}
@@ -153,7 +178,8 @@ bool Engine::checkGameEnd(){
 	return gameEnd;
 }
 
-void Engine::screenRefresh(){
+void Engine::screenRefresh()
+{
 	StateEvent stateEvent(PLAYERCHANGED);
 	currentState.notifyObservers(stateEvent, currentState); // Notify the state which will notify render
 }

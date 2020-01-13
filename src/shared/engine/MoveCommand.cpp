@@ -39,6 +39,7 @@ Json::Value MoveCommand::serialize()
 {
 	Json::Value newCommand;	
 	newCommand["id"] = id;
+    newCommand["CommandTypeId"] = 5;
 	
 	return newCommand;
 }
