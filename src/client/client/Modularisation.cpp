@@ -91,27 +91,31 @@ void Modularisation::clientThread()
     engine->getState().registerObserver(&stateLayer);
 
     stateLayer.draw();
-    while (window.isOpen()){
-        while (1)
-        {
-            if(!iaTurn1)
-            {
-                // Manage user inputs
-                handleInputs1(window,engine); 
-                if(engine->checkGameEnd()==0){
-                    window.close();
-                    cout<<"Game Over"<<endl;
-                    break;
-                }  
-          
-            } else {
-                cout << "run ai" << endl;
-                ai::HeuristicAI heuristicAi1(0);
-                heuristicAi1.run(engine);
-                iaTurn1 =false;
+    bool iaTurn = false;
+    while (window.isOpen()) {
+                if(!iaTurn){
+                    // Manage user inputs
+                    cout << "------------random ai turn------------" << endl;
+                    RandomAI randomAI(1); 
+                    randomAI.run(engine);
+                    iaTurn = true;
+                    if(engine->checkGameEnd()==0){
+                        window.close();
+                        cout<<"Game Over"<<endl;
+                        break;
+                    }
+                } else {
+                    cout << "-------heuristic ai turn------------ " << endl;
+                    HeuristicAI heuristicAI(0);
+                    heuristicAI.run(engine);
+                    iaTurn = false;
+                    if(engine->checkGameEnd()==0){
+                        window.close();
+                        cout<<"Game Over"<<endl;
+                        break;
+                    }
+                }
             }
-        }
-    }
     
 }
 
@@ -145,8 +149,7 @@ void Modularisation::play(){
 	std::string commandsFile = "record.txt";
 								
     //Initialize the window
-    sf::RenderWindow window(sf::VideoMode(1950, 900), "Fighter Zone");
-
+    sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone");
     //Engine Thread
     std::thread t1(&Modularisation::engineThread,this);
     t1.join();
