@@ -1,185 +1,42 @@
-#include "Modularisation.h"
-#include "../render.h"
-#include "../client.h"
-#include "ai.h"
-#include "engine.h"
-#include "state.h"
+#include "HandleInputs.h"
+#include "../../shared/ai.h"
+#include "../../shared/engine.h"
 
 #include <unistd.h>
-#include <thread>
-#include <mutex>
 
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-#include <SFML/Graphics.hpp>
 
 using namespace std;
 using namespace client;
 using namespace state;
-using namespace render;
 using namespace engine;
 using namespace ai;
 
+bool ia= false;
 
-bool iaTurn1 = false;
-void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine);
-
-//Constructor
-Modularisation::Modularisation(){
-    State state;
-    state.setTerrain(SekuTerrain);
-    state.initPlayers();
-    state.setRound(1);
-    engine = make_shared<Engine>(state);
-}
-
-/**run for the thread test
- * 
- * 
- */
-void Modularisation::run(){
-    cout<<"---- THREAD TEST ----"<<endl;
-
-    //Launch engine in another thread
-    
-    std::thread t1(&Modularisation::clientThread,this);
-    cout << "t1 ok " << endl;
-    std::thread t2(&Modularisation::engineThread,this);
-    cout << "t2 ok " << endl;
-    t1.join();
-    cout << "t1 join " << endl;
-    t2.join();
-    cout << "t2 join " << endl;
-}
-
-/**
- * 
- * 
- */
-void Modularisation::engineThread(){
-    
-    engine->getState().initPlayers();
-    cout << "players ok" << endl;
-}
-
-/**
- * 
- * 
- */
-void Modularisation::clientThread()
+HandleInputs::HandleInputs()
 {
-    cout<<"--- Moteur du jeu ---"<<endl;
-
-    //Initialize the window
-    sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone!");
-
-    TextureManager *textureManager = textureManager->getInstance();
-    if (textureManager->load())
-    {
-        cout << "texuture manager ok!" << endl;
-    }
-    else
-    {
-        cout << "texuture manager loading failed!" << endl;
-        //return EXIT_FAILURE;
-    }
-    
-    StateLayer stateLayer(window, engine->getState());
-    engine->getState().registerObserver(&stateLayer);
-
-    stateLayer.draw();
-    while (window.isOpen()){
-        while (1)
-        {
-            if(!iaTurn1)
-            {
-                // Manage user inputs
-                handleInputs1(window,engine);   
-            } else {
-                cout << "run ai" << endl;
-                ai::HeuristicAI heuristicAi1(1);
-                heuristicAi1.run(engine);
-                iaTurn1 =false;
-            }
-        }
-    }
     
 }
 
-//Run for the record test
-void Modularisation::record(){
-    cout<<"---- recording----"<<endl;
-
-    //Launch engine in another thread
-    std::thread t1(&Modularisation::engineThread,this);
-    std::thread t2(&Modularisation::clientThread,this);
-
-    t1.join();
-    t2.join();
-
-    Json::FastWriter fastWriter;
-    std::string output = fastWriter.write(engine->getRecord());
-    cout << "fastWriter ok" << endl;
-    ofstream recordFile("record.txt");
-    if(recordFile){
-        cout<<"Recording file opened with success"<<endl;
-        recordFile<<output<<endl;
-    }else{
-        cout<<"Recording file opening failed"<<endl;
-    }
+void HandleInputs::setIaTurn(bool iaTurn)
+{
+    this->iaTurn = iaTurn;
 }
 
-//Run to play the .txt file
-void Modularisation::play(){
-    cout << "---- PLAY TEST ----\n" << endl;
-
-	std::string commandsFile = "record.txt";
-								
-    //Initialize the window
-    sf::RenderWindow window(sf::VideoMode(1950, 900), "Fire Emblem");
-
-    //Engine Thread
-    std::thread t1(&Modularisation::engineThread,this);
-    t1.join();
-
-    //Client Side (Render)
-    engine->getState().setTerrain(SekuTerrain);
-    cout << "terrain ok" << endl;
-   
-    engine->getState().setRound(1);
-    
-    //registering statelayer to observer
-    StateLayer stateLayer(window, engine->getState());
-    engine->getState().registerObserver(&stateLayer);
-
-    TextureManager *textureManager = textureManager->getInstance();
-    if (textureManager->load())
-    {
-        cout << "texuture manager ok!" << endl;
-    }
-    else
-    {
-        cout << "texuture manager loading failed!" << endl;
-        //return EXIT_FAILURE;
-    }
-
-    stateLayer.draw();
-
-    while (window.isOpen()){
-        while (1)
-        {
-            engine->replayCommands(commandsFile);
-        }
-    }		
+bool HandleInputs::getIaTurn()
+{
+    return iaTurn;
 }
 
-
-
-void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
+void HandleInputs::handleInputsClient(std::shared_ptr<Engine> engine, sf::RenderWindow &window)
+{
     sf::Event event{};
+    
     while (window.pollEvent(event))
     {
         switch (event.type)
@@ -195,7 +52,7 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                     unique_ptr<Command> ptr_change (new ChangeRound(changeRound));
                     engine->addCommand(0, move(ptr_change));
                     engine->update();
-                    iaTurn1 = true;
+                    ia = true;
                 }
                 if(event.key.code == sf::Keyboard::A )
                 {
@@ -206,7 +63,6 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                                                     engine->getState().getPlayerList()[1]->getFighter());
                         unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
                         engine->addCommand(0, move(ptr_attack));
-
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
@@ -264,10 +120,24 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }       
                 }
-                if(event.key.code == sf::Keyboard::Left or event.key.code == sf::Keyboard::Right)
+                if(event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
+                        // cout << "lancement commande movement" <<endl;
+                        // State state = engine->getState();
+                        // shared_ptr<Fighter> fighter = state.getPlayerList()[0]->getFighter();
+                        // fighter->setX(400);
+                        // fighter->setY(100); 
+                        // vector<shared_ptr<Player>> playerList = state.getPlayerList();
+                        // Player player = *state.getPlayerList()[0].get();
+                        // player.setFighter(fighter);
+                        // playerList[0] = make_shared<Player>(player);
+                        // state.setPlayerList(playerList);
+                        // engine->setCurrentState(state);
+                        // StateEvent stateEvent(FIGHTERCHANGED);
+                        // engine->getState().notifyObservers(stateEvent, engine->getState());
+
                         std::cout << "Movement is coming for player 0" << std::endl;
                         MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
                                                 engine->getState().getPlayerList()[0]->getFighter()->getPosition());
@@ -277,9 +147,25 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
+
+                        // cout << "lancement commande movement" <<endl;
+                        // State state = engine->getState();
+                        // shared_ptr<Fighter> fighter = state.getPlayerList()[0]->getFighter();
+                        // //fighter->setPosition();
+                        // fighter->setX(400);
+                        // fighter->setY(100); 
+                        // vector<shared_ptr<Player>> playerList = state.getPlayerList();
+                        // Player player = *state.getPlayerList()[0].get();
+                        // player.setFighter(fighter);
+                        // playerList[0] = make_shared<Player>(player);
+                        // state.setPlayerList(playerList);
+                        // engine->setCurrentState(state);
+                        // StateEvent stateEvent(FIGHTERCHANGED);
+                        // engine->getState().notifyObservers(stateEvent, engine->getState());
+
                         std::cout << "Movement is coming for player 1" << std::endl;
-                        MoveCommand moveCommand(engine->getState().getPlayerList()[1]->getFighter(),
-                                                engine->getState().getPlayerList()[1]->getFighter()->getPosition());
+                        MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
+                                                engine->getState().getPlayerList()[0]->getFighter()->getPosition());
                         unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
                         engine->addCommand(0, move(ptr_move));
 
@@ -295,7 +181,3 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
         }
     }
 }
-
-
-
-

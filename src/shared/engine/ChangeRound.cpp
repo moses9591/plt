@@ -17,7 +17,17 @@ void ChangeRound::execute(State& state)
 {
     int waitingTime=40000;
     string fighterName = "";
-    switch(currentFighter->getName()){
+    if(state.getCurrentPlayerID() == 1)
+    {   
+        cout<<"player 0 turn" <<endl;
+        state.setCurrentPlayerID(0);
+    }
+    else if(state.getCurrentPlayerID() == 0)
+    {
+        cout<<"player 1 turn" <<endl;
+        state.setCurrentPlayerID(1);
+    }
+    switch( currentFighter->getName()){
         case Thork: 
             fighterName = "Thork";
             break;
@@ -37,16 +47,7 @@ void ChangeRound::execute(State& state)
 		cout << fighterName << " finished his round.\n" << endl;
         usleep(waitingTime);
 	}
-    if(state.getCurrentPlayerID() == 1)
-    {   
-        cout<<"player 0 turn" <<endl;
-        state.setCurrentPlayerID(0);
-    }
-    else if(state.getCurrentPlayerID() == 0)
-    {
-        cout<<"player 1 turn" <<endl;
-        state.setCurrentPlayerID(1);
-    }
+    
 }
 
 Json::Value ChangeRound::serialize()
