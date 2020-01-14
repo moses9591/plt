@@ -8,7 +8,7 @@ MoveArray::MoveArray()
 {
     width = 5;
     height = 1;
-    int spriteSize;
+    
     sf::Sprite grid[width][height];
 
 }

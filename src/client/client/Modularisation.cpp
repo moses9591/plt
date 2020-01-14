@@ -46,13 +46,13 @@ void Modularisation::run(){
     //Launch engine in another thread
     
     std::thread t1(&Modularisation::clientThread,this);
-    cout << "t1 ok " << endl;
+    //cout << "t1 ok " << endl;
     std::thread t2(&Modularisation::engineThread,this);
-    cout << "t2 ok " << endl;
+    //cout << "t2 ok " << endl;
     t1.join();
-    cout << "t1 join " << endl;
+    //cout << "t1 join " << endl;
     t2.join();
-    cout << "t2 join " << endl;
+    //cout << "t2 join " << endl;
 }
 
 /**
@@ -62,7 +62,7 @@ void Modularisation::run(){
 void Modularisation::engineThread(){
     
     engine->getState().initPlayers();
-    cout << "players ok" << endl;
+    //cout << "players ok" << endl;
 }
 
 /**
@@ -91,31 +91,33 @@ void Modularisation::clientThread()
     engine->getState().registerObserver(&stateLayer);
 
     stateLayer.draw();
-    bool iaTurn = false;
+    // bool iaTurn = false;
     while (window.isOpen()) {
-                if(!iaTurn){
-                    // Manage user inputs
-                    cout << "------------random ai turn------------" << endl;
-                    RandomAI randomAI(1); 
-                    randomAI.run(engine);
-                    iaTurn = true;
-                    if(engine->checkGameEnd()==0){
-                        window.close();
-                        cout<<"Game Over"<<endl;
-                        break;
-                    }
-                } else {
-                    cout << "-------heuristic ai turn------------ " << endl;
-                    HeuristicAI heuristicAI(0);
-                    heuristicAI.run(engine);
-                    iaTurn = false;
-                    if(engine->checkGameEnd()==0){
-                        window.close();
-                        cout<<"Game Over"<<endl;
-                        break;
-                    }
-                }
+        if(!iaTurn1){
+            // Manage user inputs
+            handleInputs1(window, engine);
+            
+            // cout << "------------random ai turn------------" << endl;
+            // RandomAI randomAI(1); 
+            // randomAI.run(engine);
+            // iaTurn = true;
+            if(engine->checkGameEnd()==0){
+                window.close();
+                cout<<"Game Over"<<endl;
+                break;
             }
+        } else {
+            cout << "-------heuristic ai turn------------ " << endl;
+            HeuristicAI heuristicAI(0);
+            heuristicAI.run(engine);
+            iaTurn1 = false;
+            if(engine->checkGameEnd()==0){
+                window.close();
+                cout<<"Game Over"<<endl;
+                break;
+            }
+        }
+    }
     
 }
 
@@ -189,6 +191,7 @@ void Modularisation::play(){
 
 void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
     sf::Event event{};
+    
     while (window.pollEvent(event))
     {
         switch (event.type)
@@ -210,16 +213,15 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        std::cout << "Attack is coming for player 0" << std::endl;
+                        std::cout << "-----------------Attack for player 1----------------" << std::endl;
                         AttackCommand attackCommand(engine->getState().getPlayerList()[0]->getFighter(), 
                                                     engine->getState().getPlayerList()[1]->getFighter());
                         unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
                         engine->addCommand(0, move(ptr_attack));
-
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-                        std::cout << "Attack is coming for player 1" << std::endl;
+                        std::cout << "-----------------Attack for player 2----------------"<< std::endl;
                         AttackCommand attackCommand(engine->getState().getPlayerList()[1]->getFighter(), 
                                                     engine->getState().getPlayerList()[0]->getFighter());
                         unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
@@ -232,7 +234,7 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        std::cout << "recharging is coming for player 0" << std::endl;
+                        std::cout << "-----------------Recharge for player 1----------------"<< std::endl;
                         RechargeCommand rechargeCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
@@ -241,7 +243,7 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-                       std::cout << "recharging is coming for player 1" << std::endl;
+                        std::cout << "-----------------Recharge for player 2----------------"<< std::endl;
                         RechargeCommand rechargeCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
@@ -255,7 +257,7 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        std::cout << "Defense is coming for player 0" << std::endl;
+                        std::cout << "-----------------Defense for player 1----------------"<< std::endl;
                         DefenseCommand defenseCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
@@ -264,7 +266,7 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-                        std::cout << "Defense is coming for player 1 " << std::endl;
+                        std::cout << "-----------------Defense for player 2----------------"<< std::endl;
                         DefenseCommand defenseCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
@@ -273,11 +275,11 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }       
                 }
-                if(event.key.code == sf::Keyboard::Left or event.key.code == sf::Keyboard::Right)
+                if(event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        std::cout << "Movement is coming for player 0" << std::endl;
+                        std::cout << "Move for player 0" << std::endl;
                         MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
                                                 engine->getState().getPlayerList()[0]->getFighter()->getPosition());
                         unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
@@ -286,9 +288,10 @@ void handleInputs1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-                        std::cout << "Movement is coming for player 1" << std::endl;
-                        MoveCommand moveCommand(engine->getState().getPlayerList()[1]->getFighter(),
-                                                engine->getState().getPlayerList()[1]->getFighter()->getPosition());
+                        std::cout << "Move for player 0" << std::endl;
+          
+                        MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
+                                                engine->getState().getPlayerList()[0]->getFighter()->getPosition());
                         unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
                         engine->addCommand(0, move(ptr_move));
 

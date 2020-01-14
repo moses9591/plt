@@ -56,7 +56,7 @@ void RechargeCommand::execute (state::State& state){
 Json::Value RechargeCommand::serialize()
 {
 	Json::Value newCommand;	
-	newCommand["id"] = id;
+	newCommand["id"] = fighter->getPlayerID();
     newCommand["CommandTypeId"] = 3;
 	
 	return newCommand;

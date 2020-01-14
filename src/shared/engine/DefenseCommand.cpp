@@ -75,7 +75,7 @@ void DefenseCommand::execute(state::State &state)
 Json::Value DefenseCommand::serialize()
 {
 	Json::Value newCommand;	
-	newCommand["id"] = id;
+	newCommand["id"] = isDefending->getPlayerID();
     newCommand["CommandTypeId"] = 2;
 	
 	return newCommand;

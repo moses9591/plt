@@ -6,8 +6,8 @@
 using namespace engine;
 
 Command::Command(){
-    std::cout << "command" << std::endl;
-    int rand = 0;
+    // std::cout << "command" << std::endl;
+    
 }
 
 

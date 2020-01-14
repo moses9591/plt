@@ -114,6 +114,13 @@ void Fighter::defend()
 	status = DEFENSE;
 }
 
+int Fighter::getPlayerID ()
+{
+	return playerID;
+}
+
+
+
 
 FighterName Fighter::getName()
 {

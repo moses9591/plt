@@ -70,54 +70,126 @@ void Engine::replayCommands(std::string fileName){
 						
 		// Converting commands from Json to objects
 		for (unsigned int i = 0; i < root["tabCommand"].size(); i++){
-			// Move case
-			
-
 			// Attack case
-			if(root["tabCommand"][i]["id"].asUInt() == 1){
-				AttackCommand attackCommand(currentState.getPlayerList()[0]->getFighter(),currentState.getPlayerList()[1]->getFighter());				
-				unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
-				addCommand(0, move(ptr_attack));
+			if(root["tabCommand"][i]["idPlayer"].asUInt() == 1)
+			{
+				cout << "player 1" <<endl;
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 1)
+				{
+					cout << "player 1 attack" <<endl;
+					AttackCommand attackCommand(currentState.getPlayerList()[0]->getFighter(),currentState.getPlayerList()[1]->getFighter());				
+					unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
+					addCommand(0, move(ptr_attack));
 
-				// ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
-				// unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
-				// addCommand(1, move(ptr_endEntityRound));
+					ChangeRound changeround(currentState.getPlayerList()[1]->getFighter());
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(1, move(ptr_endEntityRound));
 
-				update();
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 2){
+					cout << "player 1 defend" <<endl;
+					DefenseCommand defenseCommand(currentState.getPlayerList()[0]
+															->getFighter());
+					unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
+					addCommand(0, move(ptr_defense));
+
+					ChangeRound changeround(currentState.getPlayerList()[1]->getFighter());
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(1, move(ptr_endEntityRound));
+
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 3){
+					cout << "player 1 recharge" <<endl;
+					RechargeCommand rechargeCommand(currentState.getPlayerList()[0]->getFighter());
+					unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
+					addCommand(0, move(ptr_recharge));
+
+					ChangeRound changeround(currentState.getPlayerList()[1]->getFighter());
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(1, move(ptr_endEntityRound));
+
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 4){
+					cout << "player 1 changeRound" <<endl;
+					ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+						
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(0, move(ptr_endEntityRound));
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 5){
+					cout << "player 1 move" <<endl;
+					MoveCommand moveCommand(currentState.getPlayerList()[0]->getFighter(),
+													currentState.getPlayerList()[0]->getFighter()->getPosition());
+					unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
+					addCommand(0, move(ptr_move));
+
+					update();
+				}
 
 			}
 			//Defense case 
-			else if(root["tabCommand"][i]["id"].asUInt() == 2){
-				DefenseCommand defenseCommand(currentState.getPlayerList()[0]
-                                                        ->getFighter());
-				unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
-				addCommand(0, move(ptr_defense));
+			else if(root["tabCommand"][i]["idPlayer"].asUInt() == 2)
+			{
+				cout << "player 2" <<endl;
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 1)
+				{
+					cout << "player 2 attack" <<endl;
+					AttackCommand attackCommand(currentState.getPlayerList()[1]->getFighter(),currentState.getPlayerList()[0]->getFighter());				
+					unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
+					addCommand(0, move(ptr_attack));
 
-				// ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
-				// unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
-				// addCommand(1, move(ptr_endEntityRound));
+					ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(1, move(ptr_endEntityRound));
 
-				update();
-			}
-			//recharge case
-			else if(root["tabCommand"][i]["id"].asUInt() == 3){
-				RechargeCommand rechargeCommand(currentState.getPlayerList()[0]->getFighter());
-				unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
-				addCommand(0, move(ptr_recharge));
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 2){
+					cout << "player 2 defends" <<endl;
+					DefenseCommand defenseCommand(currentState.getPlayerList()[1]
+															->getFighter());
+					unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
+					addCommand(0, move(ptr_defense));
 
-				// ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
-				// unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
-				// addCommand(1, move(ptr_endEntityRound));
+					ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(1, move(ptr_endEntityRound));
 
-				update();
-			}
-			// End entity round case
-			else if(root["tabCommand"][i]["id"].asUInt() == 3){
-				ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
-					
-				unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
-				addCommand(0, move(ptr_endEntityRound));
-				update();
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 3){
+					cout << "player 2 recharge" <<endl;
+					RechargeCommand rechargeCommand(currentState.getPlayerList()[1]->getFighter());
+					unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
+					addCommand(0, move(ptr_recharge));
+
+					ChangeRound changeround(currentState.getPlayerList()[0]->getFighter());
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(1, move(ptr_endEntityRound));
+
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 4){
+					cout << "player 2 changeRound" <<endl;
+					ChangeRound changeround(currentState.getPlayerList()[1]->getFighter());
+						
+					unique_ptr<Command> ptr_endEntityRound (new ChangeRound(changeround));
+					addCommand(0, move(ptr_endEntityRound));
+					update();
+				}
+				if(root["tabCommand"][i]["CommandTypeId"].asUInt() == 5){
+					cout << "player 2 move" <<endl;
+					MoveCommand moveCommand(currentState.getPlayerList()[0]->getFighter(),
+													currentState.getPlayerList()[1]->getFighter()->getPosition());
+					unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
+					addCommand(0, move(ptr_move));
+
+					update();
+				}
 
 			}
 			else{

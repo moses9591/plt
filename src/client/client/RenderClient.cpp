@@ -27,9 +27,7 @@ void RenderClient::runRender()
 
     //initiate Terrain
     state.setTerrain(FlintTerrain); // ThorkTerrain, FlintTerrain, KuroTerrain
-    cout << "etat cree" << endl;
-    cout << "setting fighters on the state ok" << endl;
-
+    
     TextureManager *textureManager = textureManager->getInstance();
     if (textureManager->load())
     {
@@ -42,16 +40,15 @@ void RenderClient::runRender()
     }
 
     sf::RenderWindow window(sf::VideoMode(640, 384), "Fighter Zone");
-    cout << " fenetre cree" << endl;
-
+  
     //registering statelayer to observer
     StateLayer stateLayer(window, state);
     state.registerObserver(&stateLayer);
-    cout << "statelayer ok!" << endl;
+   
     bool attackPress = false;
 
     stateLayer.draw();
-    cout << "drawing ok!" << endl;
+    //cout << "drawing ok!" << endl;
 
     while (window.isOpen())
     {
@@ -154,8 +151,8 @@ void RenderClient::runRender()
             }
             frameCounter++;
         }
-        cout << "frame = " << frame << endl;
-        cout << "frame counter = " << frameCounter << endl;
+        // cout << "frame = " << frame << endl;
+        // cout << "frame counter = " << frameCounter << endl;
 
         
     }

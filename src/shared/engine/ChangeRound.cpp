@@ -15,16 +15,17 @@ ChangeRound::ChangeRound(std::shared_ptr<Fighter> currentFighter):currentFighter
 
 void ChangeRound::execute(State& state)
 {
+
     int waitingTime=40000;
     string fighterName = "";
     if(state.getCurrentPlayerID() == 1)
     {   
-        cout<<"player 0 turn" <<endl;
+        cout<<"player 1's turn" <<endl;
         state.setCurrentPlayerID(0);
     }
     else if(state.getCurrentPlayerID() == 0)
     {
-        cout<<"player 1 turn" <<endl;
+        cout<<"player 2's turn" <<endl;
         state.setCurrentPlayerID(1);
     }
     switch( currentFighter->getName()){
@@ -42,18 +43,18 @@ void ChangeRound::execute(State& state)
             break;
     }
     
-	if (currentFighter->getStatus()==WAITING && currentFighter->getStatus()!=DEAD){
-		currentFighter->setStatus(WAITING);
-		cout << fighterName << " finished his round.\n" << endl;
-        usleep(waitingTime);
-	}
+	// if (currentFighter->getStatus()==WAITING && currentFighter->getStatus()!=DEAD){
+	// 	currentFighter->setStatus(WAITING);
+	// 	cout << fighterName << " finished his round.\n" << endl;
+    //     usleep(waitingTime);
+	// }
     
 }
 
 Json::Value ChangeRound::serialize()
 {
 	Json::Value newCommand;	
-	newCommand["id"] = id;
+    newCommand["idPlayer"] = currentFighter->getPlayerID();
     newCommand["CommandTypeId"] = 4;
 	
 	return newCommand;

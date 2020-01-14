@@ -20,6 +20,8 @@ AttackCommand::AttackCommand (std::shared_ptr<Fighter> attacker, std::shared_ptr
 
 void AttackCommand::execute (state::State& state){
     //cout << "execution is coming" << endl;
+
+  
     int waitingTime = 5;
     
     if(attacker->getStatus()!=DEAD){
@@ -29,7 +31,7 @@ void AttackCommand::execute (state::State& state){
         //Fighting
         attacker->fight(target, COUPDEPOING);
         
-        int waitingTime=4;
+      
         
         string attackerName = "";
         string targetName = "";
@@ -64,7 +66,7 @@ void AttackCommand::execute (state::State& state){
             break;       
         }
 
-        cout << attackerName << " will attack or try to attack " << targetName << "." << endl;
+        cout << attackerName << " is attacking " << targetName << "." << endl;
         cout<< targetName << " had "<<oldTargetHealth<<" health points."<<endl;
         if(target->getHealthPoints()<=0){
             target->setStatus(DEAD);
@@ -109,10 +111,8 @@ void AttackCommand::execute (state::State& state){
 Json::Value AttackCommand::serialize()
 {
 	Json::Value newCommand;
-	newCommand["id"] = id;
-    newCommand["CommandTypeId"] = 1;
-    newCommand["idPlayer"] = this->id;
-    
+	newCommand["idPlayer"] = attacker->getPlayerID();
+    newCommand["CommandTypeId"] = 1;   
 	
 	return newCommand;
 }

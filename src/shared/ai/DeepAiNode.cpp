@@ -18,10 +18,9 @@ DeepAiNode::DeepAiNode(){
     this->childDeepAiNodeList=childDeepAiNodeList;*/
 }
 
-DeepAiNode::DeepAiNode (std::shared_ptr<DeepAiNode> ptrParent, std::shared_ptr<engine::Command> executedCommand):ptrParent(ptrParent),score(-1000),executedCommand(executedCommand),childDeepAiNodeList(childDeepAiNodeList){
-
+DeepAiNode::DeepAiNode (std::shared_ptr<DeepAiNode> ptrParent, std::shared_ptr<engine::Command> executedCommand){
+    
 }
-
 
 //Getters and Setters
 

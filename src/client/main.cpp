@@ -43,13 +43,14 @@ int main(int argc, char *argv[])
         }
         if (strcmp(argv[1], "testSFML") == 0)
         {
+            cout << "this is the test lab" <<endl;
             sf::Texture arena;
             sf::Sprite arenaSprite;
-            int frame = 0;
-            int row = 1;
-            int frameCounter = 0;
+            // int frame = 0;
+            // int row = 1;
+           // int frameCounter = 0;
 
-            float deltaTime = 0.0f;
+            //float deltaTime = 0.0f;
             sf::Clock clock;
             cout << "test sfml" << endl;
 
@@ -84,10 +85,10 @@ int main(int argc, char *argv[])
             }
             sf::Sprite grid[3][1];
             grid[0][1].setTexture(spriteSheet);
-            float x;
-            float y;
+            // float x;
+            // float y;
             
-            grid[0][1].setPosition(x, y);
+            // grid[0][1].setPosition(x, y);
             grid[0][1].setTextureRect(sf::IntRect(0,0, 100,100));
             
             grid[1][1].setTexture(spriteSheet2);
@@ -109,7 +110,7 @@ int main(int argc, char *argv[])
 
             while (window.isOpen())
             {
-                deltaTime = clock.restart().asSeconds();
+               // deltaTime = clock.restart().asSeconds();
 
                 sf::Event event;
                 sf::Font font;
@@ -177,9 +178,6 @@ int main(int argc, char *argv[])
                     grid[0][1].move(385,0);
                     grid[0][1].move(50,0);
 
-                    //animation.Update(2, deltaTime);
-                    //playerSprite.setTextureRect(animation.uvRect);
-
                 }
 
 
@@ -244,13 +242,7 @@ int main(int argc, char *argv[])
                 cout << "texuture manager loading failed!" << endl;
                 return EXIT_FAILURE;
             }
-            stateLayer.draw();
-
-            cout << " User plays first" << endl;
-            cout << "Use the following rules to play." << endl;
-            cout << "A : Attack, R: Recharge mana, D: Defend" << endl;
-            cout << "Press T : Turn Over, IA plays" << endl;
-           
+            stateLayer.draw();         
            
             while (window.isOpen()) {
                 if(!iaTurn){
@@ -264,7 +256,7 @@ int main(int argc, char *argv[])
                     
                 } else {
                     cout << "run ai" << endl;
-                    RandomAI randomAi(1); //AiID == 0
+                    RandomAI randomAi(0); //AiID == 0
                     randomAi.run(engine);
                     iaTurn =false;
                 }
@@ -299,11 +291,6 @@ int main(int argc, char *argv[])
                 return EXIT_FAILURE;
             }
             stateLayer.draw();
-
-            cout << " User plays first" << endl;
-            cout << "Use the following rules to play." << endl;
-            cout << "A : Attack, R: Recharge mana, D: Defend" << endl;
-            cout << "Press T : Turn Over, IA plays" << endl;
            
            
             while (window.isOpen()) {
@@ -448,7 +435,8 @@ int main(int argc, char *argv[])
 }
 
 void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
-    sf::Event event{};
+     sf::Event event{};
+    
     while (window.pollEvent(event))
     {
         switch (event.type)
@@ -470,7 +458,7 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        std::cout << "Attack is coming for player 0" << std::endl;
+                        std::cout << "-----------------Attack for player 1----------------" << std::endl;
                         AttackCommand attackCommand(engine->getState().getPlayerList()[0]->getFighter(), 
                                                     engine->getState().getPlayerList()[1]->getFighter());
                         unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
@@ -478,7 +466,7 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-                        std::cout << "Attack is coming for player 1" << std::endl;
+                        std::cout << "-----------------Attack for player 2----------------"<< std::endl;
                         AttackCommand attackCommand(engine->getState().getPlayerList()[1]->getFighter(), 
                                                     engine->getState().getPlayerList()[0]->getFighter());
                         unique_ptr<Command> ptr_attack (new AttackCommand(attackCommand));
@@ -491,7 +479,7 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        std::cout << "recharging is coming for player 0" << std::endl;
+                        std::cout << "-----------------Recharge for player 1----------------"<< std::endl;
                         RechargeCommand rechargeCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
@@ -500,7 +488,7 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-                       std::cout << "recharging is coming for player 1" << std::endl;
+                        std::cout << "-----------------Recharge for player 2----------------"<< std::endl;
                         RechargeCommand rechargeCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_recharge (new RechargeCommand(rechargeCommand));
@@ -514,7 +502,7 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        std::cout << "Defense is coming for player 0" << std::endl;
+                        std::cout << "-----------------Defense for player 1----------------"<< std::endl;
                         DefenseCommand defenseCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
@@ -523,7 +511,7 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-                        std::cout << "Defense is coming for player 1 " << std::endl;
+                        std::cout << "-----------------Defense for player 2----------------"<< std::endl;
                         DefenseCommand defenseCommand(engine->getState().getPlayerList()[engine->getState().getCurrentPlayerID()]
                                                         ->getFighter());
                         unique_ptr<Command> ptr_defense (new DefenseCommand(defenseCommand));
@@ -536,21 +524,7 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                 {
                     if(engine->getState().getCurrentPlayerID()== 0)
                     {
-                        // cout << "lancement commande movement" <<endl;
-                        // State state = engine->getState();
-                        // shared_ptr<Fighter> fighter = state.getPlayerList()[0]->getFighter();
-                        // fighter->setX(400);
-                        // fighter->setY(100); 
-                        // vector<shared_ptr<Player>> playerList = state.getPlayerList();
-                        // Player player = *state.getPlayerList()[0].get();
-                        // player.setFighter(fighter);
-                        // playerList[0] = make_shared<Player>(player);
-                        // state.setPlayerList(playerList);
-                        // engine->setCurrentState(state);
-                        // StateEvent stateEvent(FIGHTERCHANGED);
-                        // engine->getState().notifyObservers(stateEvent, engine->getState());
-
-                        std::cout << "Movement is coming for player 0" << std::endl;
+                        std::cout << "Move for player 0" << std::endl;
                         MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
                                                 engine->getState().getPlayerList()[0]->getFighter()->getPosition());
                         unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));
@@ -559,23 +533,8 @@ void handleInputs(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
                         engine->update();
                     }else if (engine->getState().getCurrentPlayerID()== 1)
                     {
-
-                        // cout << "lancement commande movement" <<endl;
-                        // State state = engine->getState();
-                        // shared_ptr<Fighter> fighter = state.getPlayerList()[0]->getFighter();
-                        // //fighter->setPosition();
-                        // fighter->setX(400);
-                        // fighter->setY(100); 
-                        // vector<shared_ptr<Player>> playerList = state.getPlayerList();
-                        // Player player = *state.getPlayerList()[0].get();
-                        // player.setFighter(fighter);
-                        // playerList[0] = make_shared<Player>(player);
-                        // state.setPlayerList(playerList);
-                        // engine->setCurrentState(state);
-                        // StateEvent stateEvent(FIGHTERCHANGED);
-                        // engine->getState().notifyObservers(stateEvent, engine->getState());
-
-                        std::cout << "Movement is coming for player 1" << std::endl;
+                        std::cout << "Move for player 0" << std::endl;
+          
                         MoveCommand moveCommand(engine->getState().getPlayerList()[0]->getFighter(),
                                                 engine->getState().getPlayerList()[0]->getFighter()->getPosition());
                         unique_ptr<Command> ptr_move (new MoveCommand(moveCommand));

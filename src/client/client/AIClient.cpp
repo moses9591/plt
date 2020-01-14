@@ -82,7 +82,7 @@ void AIClient::runAI()
 
 void handleInputsClient1(sf::RenderWindow &window,  std::shared_ptr<Engine> engine){
     sf::Event event{};
-    bool iaT;
+    // bool iaT;
     while (window.pollEvent(event))
     {
         switch (event.type)
