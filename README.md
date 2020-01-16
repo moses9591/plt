@@ -27,7 +27,7 @@ In order to test the code-coverage you may process as following:
 5) To finish execute the command "firefox code-coverage/index.html"
 A web page will be open showing the code-coverage based on the functions and the lines of code.
 
-## Different Command
+## Different Commands
 * "cmake .." from "build" folder
 * "make" from the same folder
 * "./bin/client render" from  "plt"  to display the render of a state 
