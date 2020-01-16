@@ -2,7 +2,7 @@
 
 # Ninja Saga
 
-This project tends to make a game close to Ninja Saga xiht simple rules.
+This project tends to make a game close to Ninja Saga with simple rules.
 ## Getting Started
 
 make diretory -> mkdir build
@@ -17,7 +17,7 @@ display errors.
 The next step is to execute the executable file named client inside the folder bin.
 ----> "./client anyword " displays "Bonjour anyword".
 
-## Running the tests
+## Running the unit tests
 
 In order to test the code-coverage you may process as following:
 1) In the folder "build" execute the command "cmake .." to compile the project
@@ -27,11 +27,18 @@ In order to test the code-coverage you may process as following:
 5) To finish execute the command "firefox code-coverage/index.html"
 A web page will be open showing the code-coverage based on the functions and the lines of code.
 
-## Displaying a render and a gameplay 
+## Different Command
 * "cmake .." from "build" folder
 * "make" from the same folder
-* "./bin/client render" from  "plt" folder to display the render of a state 
-* "./bin/client engine" from "plt" folder to display a gameplay 
+* "./bin/client render" from  "plt"  to display the render of a state 
+* "./bin/client engine" from "plt"  to display a gameplay 
+* "./bin/client random_ai" from "plt"  to play against a random ai
+* "./bin/client heuristic_ai" from "plt"  to play against a random ai
+* "./bin/client thread" from "plt" to separate the engine and render in different threads
+* "./bin/client record" from "plt"  for recording a game
+* "./bin/client play" from "plt"  to replay a recorded game
+* "./bin/server listen" from "plt" for launching a server
+* "./bin/client network" from "plt" for connecting to a lobby
 
 ## Authors
 * **Moïse BEUGRE** 
