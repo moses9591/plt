@@ -4,7 +4,7 @@
 #include "unistd.h"
 #include "ai.h"
 #include "client.h"
-
+#include "../server/server.h"
 
 #include "string.h"
 
@@ -22,6 +22,7 @@ using namespace render;
 using namespace engine;
 using namespace ai;
 using namespace client;
+using namespace server;
 
 
 
@@ -430,6 +431,11 @@ int main(int argc, char *argv[])
         {
             Modularisation modularisation;
             modularisation.play();
+        }
+        else if (strcmp(argv[1], "network") == 0)
+        {   
+            ServerClient serverClient();
+            serverClient.runServer();
         }
     }
 }
