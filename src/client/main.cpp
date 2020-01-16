@@ -434,7 +434,7 @@ int main(int argc, char *argv[])
         }
         else if (strcmp(argv[1], "network") == 0)
         {   
-            ServerClient serverClient();
+            ServerClient serverClient;
             serverClient.runServer();
         }
     }

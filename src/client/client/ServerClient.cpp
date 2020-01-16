@@ -17,7 +17,7 @@ ServerClient::ServerClient()
 
 void ServerClient::runServer()
 {
-     cout<<"---- SERVER TEST ----"<<endl;
+     cout<<"---- server----"<<endl;
 
     string name;
     cout<<"Enter your username : ";
