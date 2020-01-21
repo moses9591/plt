@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 {
     if(argc>1){
         if(strcmp(argv[1],"listen")==0){
-            cout << "I am the server" << endl;
+            cout << "Server launched" << endl;
             try {
                 ServicesManager servicesManager;
                 Game game;
